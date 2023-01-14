@@ -55,16 +55,40 @@ export default class Grid {
   }
 
   * eachRow() {
-    for(let i = 0; i < this.grid.length - 1; i++) {
+    for(let i = 0; i < this.rows; i++) {
       yield this.grid[i];
     }
   }
 
   * eachCell() {
-    for(let i = 0; i < this.grid.length; i++) {
-      for(let j = 0; j < this.grid[i].length; j++) {
+    for(let i = 0; i < this.rows; i++) {
+      for(let j = 0; j < this.columns; j++) {
         yield this.getCellAt(i,j);
       }
     }
+  }
+
+  toString() {
+    let output = `+${"---+".repeat(this.columns)}\n`;
+    const rowGen = this.eachRow();
+    let row = rowGen.next().value;
+    while (row) {
+      let top = "|";
+      let bottom = "+";
+      
+      row.forEach(cell => {
+        const { east, south } = cell.neighbors;
+        const body = "   ";
+        const east_boundary = (east && cell.linked(east)) ? ' ' : '|';
+        top += body + east_boundary;
+        const south_boundary = (south && cell.linked(south)) ? '   ' : '---';
+        bottom += south_boundary + '+';
+      })
+
+      output += `${top}\n${bottom}\n`;
+
+      row = rowGen.next().value;
+    }
+    console.log(output);
   }
 }

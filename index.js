@@ -1,6 +1,8 @@
 import Grid from './grid.js';
+import BinaryTree from './binary-tree.js';
 
-const foo = new Grid(4,4);
+const foo = new Grid(10,10);
 
-console.log(foo.getCellAt(3,2)?.neighbors);
-console.log(foo.random_cell());
+BinaryTree.on(foo);
+
+foo.toString();
