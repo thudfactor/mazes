@@ -1,5 +1,5 @@
 import Grid from './grid';
-import { arraySample } from './util';
+import { arraySample } from '../util/index';
 
 export default class BinaryTree {
   static on(grid:Grid) {
@@ -22,5 +22,6 @@ export default class BinaryTree {
       }
       c = cellGenerator.next().value;
     }
+    return grid;
   }
 }

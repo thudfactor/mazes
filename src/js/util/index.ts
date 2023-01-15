@@ -3,6 +3,10 @@ export const arrayOf = (val: number):number[] => {
 }
 
 export const arraySample = (array:any[]):any => {
-  const index = Math.floor(Math.random() * array.length);
+  const index = randomFrom(array.length - 1);
   return array[index];
+}
+
+export const randomFrom = (max:number):number => {
+  return Math.floor(Math.random() * (max + 1));
 }

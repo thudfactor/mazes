@@ -1,10 +1,17 @@
 import Cell from './cell';
-import { arrayOf } from './util';
+import { arrayOf, arraySample, randomFrom } from '../util/index';
+
+type CellAddress = {
+  row: number;
+  column: number;
+}
 
 export default class Grid {
   rows: number;
   columns: number;
   grid: Cell[][];
+  start: CellAddress;
+  end: CellAddress;
 
   constructor(rows: number, columns: number) {
     this.rows = rows;
@@ -13,6 +20,19 @@ export default class Grid {
     this.configureCells();
 
     this.getCellAt.bind(this);
+
+    const startCol = (randomFrom(1) === 0) ? 0 : this.columns - 1;
+    const endCol = (startCol === 0) ? this.columns - 1 : 0;
+
+    this.start = {
+      row: randomFrom(this.rows - 1),
+      column: startCol
+    }
+
+    this.end = {
+      row: randomFrom(this.rows - 1),
+      column: endCol
+    }
   }
 
   prepareGrid(): Cell[][] {
@@ -49,8 +69,8 @@ export default class Grid {
   }
 
   random_cell() {
-    const row = Math.floor(Math.random() * this.rows);
-    const col = Math.floor(Math.random() * this.columns);
+    const row = randomFrom(this.rows - 1);
+    const col = randomFrom(this.cols - 1);
     return this.grid[row][col];
   }
 
@@ -72,6 +92,7 @@ export default class Grid {
     }
   }
 
+  // Default renderer; useful if running in a node context
   toString() {
     let output = `+${"---+".repeat(this.columns)}\n`;
     const rowGen = this.eachRow();
@@ -82,7 +103,12 @@ export default class Grid {
       
       row.forEach(cell => {
         const { east, south } = cell.neighbors;
-        const body = "   ";
+        const isStart = cell.column === this.start.column && cell.row === this.start.row;
+        const isEnd = cell.column === this.end.column && cell.row == this.end.row;
+        let marker = ' ';
+        if (isStart) marker = '✬';
+        if (isEnd) marker = '⦿';
+        const body = ` ${marker} `;
         const east_boundary = (east && cell.linked(east)) ? ' ' : '|';
         top += body + east_boundary;
         const south_boundary = (south && cell.linked(south)) ? '   ' : '---';

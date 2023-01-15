@@ -18,11 +18,3 @@ body {
   background-color: white;
 }
 
-#mazeOut {
-  width: max-content;
-  margin: 1rem auto;
-  font-family: monospace;
-  white-space: pre;
-  line-height: 1;
-  letter-spacing: -.05em;
-}
