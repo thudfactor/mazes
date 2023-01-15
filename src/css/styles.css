@@ -1,4 +1,26 @@
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: hsl(78 10% 90%);
+  display: grid;
+  place-items: center;
+  border: 1px #ccc solid;
+}
+
+.container {
+  width: 37.5rem;
+  border: 1px #000 solid;
+  padding: 1rem;
+  text-align: center;
+  margin: auto;
+  background-color: white;
+}
+
 #mazeOut {
+  width: max-content;
+  margin: 1rem auto;
   font-family: monospace;
   white-space: pre;
   line-height: 1;
