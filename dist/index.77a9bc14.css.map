@@ -1,1 +1,0 @@
-{"mappings":"AAAA","sources":["src/css/styles.css"],"sourcesContent":["#mazeOut {\n  font-family: monospace;\n  white-space: pre;\n  line-height: 1;\n  letter-spacing: -.05em;\n}"],"names":[],"version":3,"file":"index.77a9bc14.css.map","sourceRoot":"/__parcel_source_root/"}
