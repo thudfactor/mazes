@@ -1,17 +1,13 @@
 import Cell from './cell';
 import { arrayOf, arraySample, randomFrom } from '../util/index';
 
-type CellAddress = {
-  row: number;
-  column: number;
-}
 
 export default class Grid {
   rows: number;
   columns: number;
   grid: Cell[][];
-  start: CellAddress;
-  end: CellAddress;
+  start: Cell;
+  end: Cell;
 
   constructor(rows: number, columns: number) {
     this.rows = rows;
@@ -24,15 +20,8 @@ export default class Grid {
     const startCol = (randomFrom(1) === 0) ? 0 : this.columns - 1;
     const endCol = (startCol === 0) ? this.columns - 1 : 0;
 
-    this.start = {
-      row: randomFrom(this.rows - 1),
-      column: startCol
-    }
-
-    this.end = {
-      row: randomFrom(this.rows - 1),
-      column: endCol
-    }
+    this.start = this.grid[randomFrom(this.rows - 1)][startCol];
+    this.end = this.grid[randomFrom(this.rows - 1)][endCol];
   }
 
   prepareGrid(): Cell[][] {

@@ -1,6 +1,7 @@
 import Grid from "~js/model/grid";
-import styled from 'styled-components';
 import Cell from "~js/model/cell";
+import { Avatar } from "../characters/avatar";
+import styled from 'styled-components';
 
 const cellSize = 10;
 
@@ -11,66 +12,58 @@ const StyledSVG = styled.svg`
 
 type SVGRendererProps = {
   maze: Grid;
+  avatar?: Cell; 
 }
 
-type SVGCellProps = {
-  cell: Cell;
+function renderLandmarks(maze: Grid) {
+  const { start, end } = maze;
+  return (
+    <g className="landmarks">
+      <circle 
+        fill="green"
+        cx={(start.column * cellSize) + (cellSize / 2)}
+        cy={(start.row * cellSize) + (cellSize / 2)}
+        r={(cellSize / 2) - (cellSize * .1)}
+      />
+      <rect 
+        fill="red"
+        x={(end.column * cellSize)}
+        y={(end.row * cellSize)}
+        width={cellSize - .2}
+        height={cellSize - .2}
+      />
+    </g>
+  );
 }
 
-function SVGCell({cell}:SVGCellProps) {
-
-}
-
-function renderCells(maze: Grid): JSX.Element[] {
+function renderWalls(maze: Grid): JSX.Element {
   const cellsList = maze.eachCell();
-  const list:JSX.Element[] = [];
+  let pathdata:string[] = [];
   for (let cell of cellsList) {
     const { row, column, neighbors } = cell;
     const { east, south } = neighbors;
-    const isStart = (cell.column === maze.start.column && cell.row === maze.start.row);
-    const isEnd = (cell.column === maze.end.column && cell.row === maze.end.row);
-    const key=`r${row}c${column}`;
-    if (isStart || isEnd) {
-      list.push(
-        <rect 
-          key={`${key}-${(isStart) ? "start" : "end"}`}
-          fill={(isStart) ? "green" : "red"} 
-          x={.5 + (cellSize * column)} 
-          y={.5 + (cellSize * row)} 
-          width={cellSize} 
-          height={cellSize} 
-        />
-      )
+    const eastBoundary = (!east || !cell.linked(east));
+    const southBoundary = (!south || !cell.linked(south));
+    
+    let thisSegment = '';
+    if (eastBoundary && southBoundary) {
+      thisSegment = `M${column * cellSize},${((row + 1) * cellSize)}h${cellSize}v${-cellSize}`;
+    } else if (southBoundary) {
+      thisSegment = `M${column * cellSize},${((row + 1) * cellSize)}h${cellSize}`;
+    } else if (eastBoundary) {
+      thisSegment = `M${(column + 1) * cellSize},${row * cellSize}v${cellSize}`;
     }
-    if (!east || !cell.linked(east)) {
-      list.push(
-        <line 
-          key={`${key}-east`}
-          x1={cellSize + (column * cellSize)}
-          y1={row * cellSize}
-          x2={cellSize + (column * cellSize)}
-          y2={cellSize + (row * cellSize)}
-          strokeWidth="1" 
-          stroke="black" />
-      )
-    }
-    if (!south || !cell.linked(south)) {
-      list.push(
-        <line 
-          key={`${key}-south`}
-          x1={column * cellSize}
-          y1={cellSize + (row * cellSize)}
-          x2={cellSize + (column * cellSize)}
-          y2={cellSize + (row * cellSize)}
-          strokeWidth="1" 
-          stroke="black" />
-      )
-    }
+    pathdata.push(thisSegment);
   }
-  return list;
+
+  return (
+    <g className="walls">
+      <path stroke="black" fill="none" strokeWidth="1" d={pathdata.join(' ')} />
+    </g>
+  );
 }
 
-export function SVGRenderer({ maze }:SVGRendererProps) {
+export function SVGRenderer({ maze, avatar }:SVGRendererProps) {
   const { rows, columns } = maze;
   const height = rows * cellSize;
   const width = columns * cellSize;
@@ -78,12 +71,12 @@ export function SVGRenderer({ maze }:SVGRendererProps) {
   return (
     <>
       <p>Start at <span style={{color: "green"}}>◼︎</span> and proceed towards <span style={{color: "red"}}>◼︎</span></p>
-      <StyledSVG viewBox={`0 0 ${width} ${height}`}>
+      <StyledSVG viewBox={`-.5 -.5 ${width + 1} ${height + 1}`}>
         <line strokeWidth="1" stroke="black" x1={0} y1={0} x2={width} y2={0} />
         <line strokeWidth="1" stroke="black" x1={0} y1={0} x2={0} y2={height} />
-        <g>
-          { renderCells(maze).map(c => c) }
-        </g>
+        { renderLandmarks(maze) }
+        { renderWalls(maze) }
+        { avatar && <Avatar x={avatar.column * cellSize} y={avatar.row * cellSize} size={cellSize} /> }
       </StyledSVG>
     </>
   );
