@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "main": "index.js",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "type": "module",
   "source": "src/index.html",
   "scripts": {
