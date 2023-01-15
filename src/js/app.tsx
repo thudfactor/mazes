@@ -29,15 +29,15 @@ export function App() {
   function keyDown({ key }: { key: string; }) {
     const ap = avatarPosRef.current;
     let direction: Cell = null;
-    if (['w','arrowUp'].includes(key)) {
+    if (['w','ArrowUp'].includes(key)) {
       direction = ap.neighbors.north;
-    } else if (['a','arrowLeft'].includes(key)) {
+    } else if (['a','ArrowLeft'].includes(key)) {
       direction = ap.neighbors.west;
     }
-    else if (['s','arrowDown'].includes(key)) {
+    else if (['s','ArrowDown'].includes(key)) {
       direction = ap.neighbors.south;
     }
-    else if (['d','arrowRight'].includes(key)) {
+    else if (['d','ArrowRight'].includes(key)) {
       direction = ap.neighbors.east;
     }
     if (direction && ap.linked(direction)) {
