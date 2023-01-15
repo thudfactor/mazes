@@ -1,5 +1,17 @@
+type Neighbors = {
+  north: Cell;
+  east: Cell;
+  south: Cell;
+  west: Cell;
+}
+
 export default class Cell {
-  constructor(row, column) {
+  row: number;
+  column: number;
+  links: Cell[];
+  neighbors: Neighbors;
+
+  constructor(row: number, column: number) {
     this.row = row;
     this.column = column;
     this.links = [];
@@ -11,18 +23,18 @@ export default class Cell {
     }
   }
 
-  link(cell, bidi = true) {
+  link(cell: Cell, bidi = true) {
     this.links.push(cell);
     bidi && cell.link(this, false);
   }
 
-  unlink(cell, bidi = true) {
+  unlink(cell: Cell, bidi = true) {
     const newLinks = this.links.filter((current) => ((current.row !== cell.row) || (current.column !== cell.column)));
     this.links = newLinks;
     bidi && cell.unlink(this, false);
   }
 
-  linked(cell) {
+  linked(cell: Cell) {
     const found = this.links.find((current) => {
       return ((current.row === cell.row) && (current.column === cell.column));
     });

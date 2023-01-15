@@ -1,4 +1,4 @@
-import Cell from './cell.js';
+import Cell from './cell.ts';
 import { arrayOf } from './util.js';
 
 export default class Grid {
