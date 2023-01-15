@@ -1,7 +1,8 @@
-import { arraySample } from './util.js';
+import Grid from './grid';
+import { arraySample } from './util';
 
 export default class BinaryTree {
-  static on(grid) {
+  static on(grid:Grid) {
     const cellGenerator = grid.eachCell();
     let c = cellGenerator.next().value;
     while (c) {

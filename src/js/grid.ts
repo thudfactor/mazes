@@ -1,8 +1,12 @@
-import Cell from './cell.ts';
-import { arrayOf } from './util.js';
+import Cell from './cell';
+import { arrayOf } from './util';
 
 export default class Grid {
-  constructor(rows, columns) {
+  rows: number;
+  columns: number;
+  grid: Cell[][];
+
+  constructor(rows: number, columns: number) {
     this.rows = rows;
     this.columns = columns;
     this.grid = this.prepareGrid();
@@ -11,11 +15,11 @@ export default class Grid {
     this.getCellAt.bind(this);
   }
 
-  prepareGrid() {
+  prepareGrid(): Cell[][] {
     const rowIndicies = arrayOf(this.rows);
     const colIndicies = arrayOf(this.columns);
-    const grid = rowIndicies.map((row) => {
-      return colIndicies.map(col => new Cell(row, col));
+    const grid = rowIndicies.map((row: number) => {
+      return colIndicies.map((col: number) => new Cell(row, col));
     });
     return grid;
   }
@@ -35,7 +39,7 @@ export default class Grid {
     }
   }
 
-  getCellAt(row, col) {
+  getCellAt(row: number, col: number) {
     if (row >= 0 && row < this.rows) {
       if (col >= 0 && col < this.columns) {
         return this.grid[row][col];
@@ -83,7 +87,7 @@ export default class Grid {
         top += body + east_boundary;
         const south_boundary = (south && cell.linked(south)) ? '   ' : '---';
         bottom += south_boundary + '+';
-      })
+      });
 
       output += `${top}\n${bottom}\n`;
 

@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
     "isolatedModules": true,
-    "lib": ["ES2021"]
-  }
+    "target": "ES2021",
+  },
+  "include": [
+    "src/js/**/*.ts",
+    "src/js/**/*.tsx"
+  ]
 }

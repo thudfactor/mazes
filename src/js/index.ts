@@ -1,7 +1,7 @@
-import Grid from './grid.js';
-import BinaryTree from './binary-tree.js';
+import Grid from './grid';
+import BinaryTree from './binary-tree';
 
-function generateMaze() {
+function generateMaze():string {
   const maze = new Grid(20,20);
   BinaryTree.on(maze);
   return maze.toString();
