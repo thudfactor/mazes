@@ -89,6 +89,6 @@ export default class Grid {
 
       row = rowGen.next().value;
     }
-    console.log(output);
+    return output;
   }
 }

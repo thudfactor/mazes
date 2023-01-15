@@ -1,7 +1,16 @@
 {
   "name": "mazes",
   "version": "1.0.0",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
   "main": "index.js",
   "license": "MIT",
-  "type": "module"
+  "type": "module",
+  "source": "src/index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build"
+  },
+  "devDependencies": {
+    "parcel": "^2.8.2"
+  }
 }
