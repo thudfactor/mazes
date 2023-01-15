@@ -70,7 +70,7 @@ export default class Grid {
 
   random_cell() {
     const row = randomFrom(this.rows - 1);
-    const col = randomFrom(this.cols - 1);
+    const col = randomFrom(this.columns - 1);
     return this.grid[row][col];
   }
 
