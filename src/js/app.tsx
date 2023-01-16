@@ -3,9 +3,53 @@ import BinaryTree from './model/binary-tree';
 import { useState, useEffect, useRef } from 'react';
 import { SVGRenderer } from './renderers/svg-renderer';
 import Cell from './model/cell';
+import styled from 'styled-components';
+
+const StyledLayout = styled.div`
+  position: absolute;
+  inset: 1rem;
+  background-color: white;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+
+  .maze {
+    padding: 1rem;
+    grid-column: 1/3;
+    grid-row: 1/3;
+    text-align: center;
+    background-color: #ccc;
+    display: grid;
+    place-content: center;
+
+    svg {
+      margin: auto;
+      height: 80vmin;
+      width: 80vmin;
+    }
+  }
+
+  .controls {
+    padding: 1rem;
+    grid-column: 3/4;
+    grid-row: 1/2;
+    display: grid;
+    place-content: center;
+    text-align: center;
+  }
+
+  .meta {
+    padding: 1rem;
+    grid-column: 3/4;
+    grid-row: 2/3;
+    display: grid;
+    place-content: center;
+    text-align: center;
+  }  
+`
 
 function generateMaze():Grid {
-  return BinaryTree.on(new Grid(25,25));
+  return BinaryTree.on(new Grid(50,50));
 }
 
 export function App() {
@@ -60,13 +104,19 @@ export function App() {
   }, []);
 
   return (
-    <div className="container" >
-      <h1>Mazes</h1>
-      <p><button onClick={() => rebuild()}>Generate Maze</button></p>
-      <p>Arrow keys or WASD to move</p>
-      { maze && <SVGRenderer maze={maze} avatar={avatarPos} /> }
-      <p>This maze was generated using a binary tree algorithm. Code adapted from <a href="http://www.mazesforprogrammers.com/">Mazes for Programmers</a> by Jamis Buck. <a href="https://github.com/thudfactor/mazes">Source code on GitHub</a>.</p>
-    </div>
+    <StyledLayout>
+      <div className="maze">
+        { maze && <SVGRenderer maze={maze} avatar={avatarPos} /> }
+      </div>
+      <div className="controls">
+        <h1>Mazes</h1>
+        <p><button onClick={() => rebuild()}>Generate Maze</button></p>
+        <p>Arrow keys or WASD to move</p>
+      </div>
+      <div className="meta">
+        <p>This maze was generated using a binary tree algorithm. Code adapted from <a href="http://www.mazesforprogrammers.com/">Mazes for Programmers</a> by Jamis Buck. <a href="https://github.com/thudfactor/mazes">Source code on GitHub</a>.</p>
+      </div>
+    </StyledLayout>
   );
 }
 

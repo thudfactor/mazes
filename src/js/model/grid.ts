@@ -1,6 +1,5 @@
 import Cell from './cell';
-import { arrayOf, arraySample, randomFrom } from '../util/index';
-
+import { arrayOf, randomFrom } from '../util/index';
 
 export default class Grid {
   rows: number;

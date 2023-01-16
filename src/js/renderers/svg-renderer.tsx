@@ -72,6 +72,7 @@ export function SVGRenderer({ maze, avatar }:SVGRendererProps) {
     <>
       <p>Start at <span style={{color: "green"}}>◼︎</span> and proceed towards <span style={{color: "red"}}>◼︎</span></p>
       <StyledSVG viewBox={`-.5 -.5 ${width + 1} ${height + 1}`}>
+        <rect x="0" y="0" width="100%" height="100%" fill="white" />
         <line strokeWidth="1" stroke="black" x1={0} y1={0} x2={width} y2={0} />
         <line strokeWidth="1" stroke="black" x1={0} y1={0} x2={0} y2={height} />
         { renderLandmarks(maze) }
