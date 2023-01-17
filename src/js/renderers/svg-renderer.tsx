@@ -58,7 +58,7 @@ function renderWalls(maze: Grid): JSX.Element {
 
   return (
     <g className="walls">
-      <path stroke="black" fill="none" strokeWidth="1" d={pathdata.join(' ')} />
+      <path strokeLinejoin="round" strokeLinecap="round" stroke="black" fill="none" strokeWidth="1" d={pathdata.join(' ')} />
     </g>
   );
 }
@@ -73,8 +73,8 @@ export function SVGRenderer({ maze, avatar }:SVGRendererProps) {
       <p>Start at <span style={{color: "green"}}>◼︎</span> and proceed towards <span style={{color: "red"}}>◼︎</span></p>
       <StyledSVG viewBox={`-.5 -.5 ${width + 1} ${height + 1}`}>
         <rect x="0" y="0" width="100%" height="100%" fill="white" />
-        <line strokeWidth="1" stroke="black" x1={0} y1={0} x2={width} y2={0} />
-        <line strokeWidth="1" stroke="black" x1={0} y1={0} x2={0} y2={height} />
+        <line strokeLinecap="round" strokeWidth="1" stroke="black" x1={0} y1={0} x2={width} y2={0} />
+        <line strokeLinecap="round" strokeWidth="1" stroke="black" x1={0} y1={0} x2={0} y2={height} />
         { renderLandmarks(maze) }
         { renderWalls(maze) }
         { avatar && <Avatar x={avatar.column * cellSize} y={avatar.row * cellSize} size={cellSize} /> }
