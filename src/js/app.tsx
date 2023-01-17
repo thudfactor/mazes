@@ -2,8 +2,8 @@ import Grid from './model/grid';
 import BinaryTree from './model/binary-tree';
 import { useState, useEffect, useRef } from 'react';
 import { SVGRenderer } from './renderers/svg-renderer';
-import Cell from './model/cell';
 import styled from 'styled-components';
+import { ASCIIRenderer } from './renderers/ascii-renderer';
 
 const StyledLayout = styled.div`
   position: absolute;
@@ -21,6 +21,7 @@ const StyledLayout = styled.div`
     background-color: #ccc;
     display: grid;
     place-content: center;
+    overflow: auto;
 
     svg {
       margin: auto;
@@ -45,16 +46,26 @@ const StyledLayout = styled.div`
     display: grid;
     place-content: center;
     text-align: center;
-  }  
+  }
+
+  .navigation {
+    button {
+      display: inline-block;
+      font-size: 2rem;
+      margin: .5rem;
+    }
+  }
 `
 
-function generateMaze():Grid {
-  return BinaryTree.on(new Grid(50,50));
-}
-
 export function App() {
+  const [size, setSize] = useState(20);
   const [maze, setMaze] = useState(generateMaze());
   const [avatarPos, _setAvatarPos] = useState(maze.start);
+  const [renderer, setRenderer] = useState('svg');
+
+  function generateMaze():Grid {
+    return BinaryTree.on(new Grid(size,size));
+  }
   
   // this nonsense is due to using state hooks in event handlers
   const avatarPosRef = useRef(avatarPos);
@@ -63,30 +74,30 @@ export function App() {
     _setAvatarPos(data);
   }
 
-  function navigateAvatar(direction: Cell) {
+  function navigateAvatar(direction: string) {
     const ap = avatarPosRef.current;
-    if (ap.linked(direction)) {
-      setAvatarPos(direction);
+    const { neighbors } = ap;
+    const nextCell = neighbors[direction];
+    if (nextCell && ap.linked(nextCell)) {
+      setAvatarPos(nextCell);
     }
   }
 
   function keyDown({ key }: { key: string; }) {
     const ap = avatarPosRef.current;
-    let direction: Cell = null;
+    let direction = null;
     if (['w','ArrowUp'].includes(key)) {
-      direction = ap.neighbors.north;
+      direction = 'north';
     } else if (['a','ArrowLeft'].includes(key)) {
-      direction = ap.neighbors.west;
+      direction = 'west';
     }
     else if (['s','ArrowDown'].includes(key)) {
-      direction = ap.neighbors.south;
+      direction = 'south';
     }
     else if (['d','ArrowRight'].includes(key)) {
-      direction = ap.neighbors.east;
+      direction = 'east';
     }
-    if (direction && ap.linked(direction)) {
-      navigateAvatar(direction);
-    }
+    if (direction !== null) navigateAvatar(direction);
   }
 
   function rebuild() {
@@ -103,15 +114,54 @@ export function App() {
     });
   }, []);
 
+  useEffect(() => {
+    rebuild();
+  }, [size])
+
   return (
     <StyledLayout>
       <div className="maze">
-        { maze && <SVGRenderer maze={maze} avatar={avatarPos} /> }
+        { renderer === 'svg' && maze && <SVGRenderer maze={maze} avatar={avatarPos} /> }
+        { renderer === 'ascii' && <ASCIIRenderer maze={maze} avatar={avatarPos} /> }
       </div>
       <div className="controls">
         <h1>Mazes</h1>
         <p><button onClick={() => rebuild()}>Generate Maze</button></p>
         <p>Arrow keys or WASD to move</p>
+        <form onSubmit={(e) => e.preventDefault()}>
+          <fieldset>
+            <legend>Renderer</legend>
+            <label><input
+              onChange={() => setRenderer("svg")}
+              checked={renderer === 'svg'}
+              type="radio"
+              name="renderer"
+              value="svg" /> SVG</label><br/>
+            <label><input 
+              onChange={() => setRenderer("ascii")}
+              checked={renderer === 'ascii'}
+              type="radio"
+              name="renderer"
+              value="ascii" /> ASCII</label>
+          </fieldset>
+          <fieldset>
+            <legend>Maze Attributes</legend>
+            <p>Changing this will reset the maze.</p>
+            <label><input 
+              type="range" 
+              value={size}
+              onChange={(e) => setSize(parseInt(e.target.value))}
+              min={5} 
+              max={50} 
+              step={5} /> Size ({size})</label>
+          </fieldset>
+          <fieldset className="navigation">
+            <legend>Navigate</legend>
+            <button onClick={() => navigateAvatar('north')}>↑</button><br />
+            <button onClick={() => navigateAvatar('west')}>←</button> <button onClick={() => navigateAvatar('east')}>→</button><br />
+            <button onClick={() => navigateAvatar('south')}>↓</button>
+          </fieldset>
+        </form>
       </div>
       <div className="meta">
         <p>This maze was generated using a binary tree algorithm. Code adapted from <a href="http://www.mazesforprogrammers.com/">Mazes for Programmers</a> by Jamis Buck. <a href="https://github.com/thudfactor/mazes">Source code on GitHub</a>.</p>

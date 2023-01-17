@@ -34,8 +34,7 @@ export default class Grid {
 
   configureCells() {
     const allCells = this.eachCell();
-    let c = allCells.next().value;
-    while (c) {
+    for (let c of allCells) {
       const {row, column: col} = c;
       c.neighbors = {
         north: this.getCellAt(row - 1,col),
@@ -43,7 +42,6 @@ export default class Grid {
         west: this.getCellAt(row, col - 1),
         east: this.getCellAt(row, col + 1)
       }
-      c = allCells.next().value;
     }
   }
 
@@ -84,8 +82,7 @@ export default class Grid {
   toString() {
     let output = `+${"---+".repeat(this.columns)}\n`;
     const rowGen = this.eachRow();
-    let row = rowGen.next().value;
-    while (row) {
+    for (let row of rowGen) {
       let top = "|";
       let bottom = "+";
       
@@ -104,8 +101,6 @@ export default class Grid {
       });
 
       output += `${top}\n${bottom}\n`;
-
-      row = rowGen.next().value;
     }
     return output;
   }
