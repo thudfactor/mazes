@@ -8,7 +8,8 @@ export const arraySample = (array:any[]):any => {
 }
 
 export const randomFrom = (max:number):number => {
-  return Math.floor(Math.random() * (max + 1));
+  const result = Math.floor(Math.random() * (max + 1));
+  return result;
 }
 
 // const maxWeight = 100;

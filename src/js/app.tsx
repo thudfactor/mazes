@@ -1,5 +1,6 @@
 import Grid from './model/grid';
 import BinaryTree from './model/binary-tree';
+import Sidewinder from './model/sidewinder';
 import { useState, useEffect, useRef } from 'react';
 import { SVGRenderer } from './renderers/svg-renderer';
 import styled from 'styled-components';
@@ -64,7 +65,7 @@ export function App() {
   const [renderer, setRenderer] = useState('svg');
 
   function generateMaze():Grid {
-    return BinaryTree.on(new Grid(size,size));
+    return Sidewinder.on(new Grid(size,size));
   }
   
   // this nonsense is due to using state hooks in event handlers
@@ -84,7 +85,6 @@ export function App() {
   }
 
   function keyDown({ key }: { key: string; }) {
-    const ap = avatarPosRef.current;
     let direction = null;
     if (['w','ArrowUp'].includes(key)) {
       direction = 'north';
@@ -164,7 +164,7 @@ export function App() {
         </form>
       </div>
       <div className="meta">
-        <p>This maze was generated using a binary tree algorithm. Code adapted from <a href="http://www.mazesforprogrammers.com/">Mazes for Programmers</a> by Jamis Buck. <a href="https://github.com/thudfactor/mazes">Source code on GitHub</a>.</p>
+        <p>This maze was generated using the “sidewinder” algorithm. Code adapted from <a href="http://www.mazesforprogrammers.com/">Mazes for Programmers</a> by Jamis Buck. <a href="https://github.com/thudfactor/mazes">Source code on GitHub</a>.</p>
       </div>
     </StyledLayout>
   );
