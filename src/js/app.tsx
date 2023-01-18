@@ -56,6 +56,10 @@ const StyledLayout = styled.div`
       margin: .5rem;
     }
   }
+
+  fieldset {
+    text-align: left;
+  }
 `
 
 export function App() {
@@ -178,12 +182,12 @@ export function App() {
               max={50} 
               step={5} /> Size ({size})</label>
           </fieldset>
-          <fieldset className="navigation">
+          <div className="navigation">
             <legend>Navigate</legend>
             <button onClick={() => navigateAvatar('north')}>↑</button><br />
             <button onClick={() => navigateAvatar('west')}>←</button> <button onClick={() => navigateAvatar('east')}>→</button><br />
             <button onClick={() => navigateAvatar('south')}>↓</button>
-          </fieldset>
+          </div>
         </form>
       </div>
       <div className="meta">
