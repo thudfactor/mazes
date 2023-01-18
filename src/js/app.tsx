@@ -60,12 +60,19 @@ const StyledLayout = styled.div`
 
 export function App() {
   const [size, setSize] = useState(20);
+  const [builder, setBuilder] = useState('sidewinder');
+  const [renderer, setRenderer] = useState('svg');
   const [maze, setMaze] = useState(generateMaze());
   const [avatarPos, _setAvatarPos] = useState(maze.start);
-  const [renderer, setRenderer] = useState('svg');
 
   function generateMaze():Grid {
-    return Sidewinder.on(new Grid(size,size));
+    let fn = BinaryTree.on;
+    switch (builder) {
+      case 'sidewinder':
+        fn = Sidewinder.on;
+        break;
+    }
+    return fn(new Grid(size,size));
   }
   
   // this nonsense is due to using state hooks in event handlers
@@ -116,7 +123,7 @@ export function App() {
 
   useEffect(() => {
     rebuild();
-  }, [size])
+  }, [size, builder])
 
   return (
     <StyledLayout>
@@ -145,6 +152,22 @@ export function App() {
               value="ascii" /> ASCII</label>
           </fieldset>
           <fieldset>
+            <legend>Build Strategy</legend>
+            <p>Changing this will reset the maze.</p>
+            <label><input
+              onChange={() => setBuilder("sidewinder")}
+              checked={builder === 'sidewinder'}
+              type="radio"
+              name="builder"
+              value="sidewinder" /> Sidewinder</label><br/>
+            <label><input 
+              onChange={() => setBuilder("binarytree")}
+              checked={builder === 'binarytree'}
+              type="radio"
+              name="builder"
+              value="binarytree" /> Binary Tree</label>
+          </fieldset>
+          <fieldset>
             <legend>Maze Attributes</legend>
             <p>Changing this will reset the maze.</p>
             <label><input 
@@ -164,7 +187,7 @@ export function App() {
         </form>
       </div>
       <div className="meta">
-        <p>This maze was generated using the “sidewinder” algorithm. Code adapted from <a href="http://www.mazesforprogrammers.com/">Mazes for Programmers</a> by Jamis Buck. <a href="https://github.com/thudfactor/mazes">Source code on GitHub</a>.</p>
+        <p>Code adapted from <a href="http://www.mazesforprogrammers.com/">Mazes for Programmers</a> by Jamis Buck. <a href="https://github.com/thudfactor/mazes">Source code on GitHub</a>.</p>
       </div>
     </StyledLayout>
   );
