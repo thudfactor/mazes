@@ -29,9 +29,9 @@ export function ASCIIRenderer({ maze, avatar }:AsciiRendererProps) {
       
       row.forEach(cell => {
         const { east, south } = cell.neighbors;
-        const isStart = cell.column === maze.start.column && cell.row === maze.start.row;
-        const isEnd = cell.column === maze.end.column && cell.row == maze.end.row;
-        const isAvatar = avatar && cell.column === avatar.column && cell.row == avatar.row;
+        const isStart = cell.equals(maze.start);
+        const isEnd = cell.equals(maze.end);
+        const isAvatar = avatar && cell.equals(avatar);
         let marker = ' ';
         if (isStart) marker = '✬';
         if (isEnd) marker = '⦿';

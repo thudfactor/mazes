@@ -23,6 +23,11 @@ export default class Cell {
     }
   }
 
+  // Checks for equality with a cell by comparing the cells address
+  equals(cell: Cell):boolean {
+    return this.row === cell.row && this.column === cell.column;
+  }
+
   link(cell: Cell, bidi = true) {
     this.links.push(cell);
     bidi && cell.link(this, false);

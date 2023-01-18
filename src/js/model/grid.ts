@@ -88,8 +88,8 @@ export default class Grid {
       
       row.forEach(cell => {
         const { east, south } = cell.neighbors;
-        const isStart = cell.column === this.start.column && cell.row === this.start.row;
-        const isEnd = cell.column === this.end.column && cell.row == this.end.row;
+        const isStart = cell.equals(this.start); 
+        const isEnd = cell.equals(this.end);
         let marker = ' ';
         if (isStart) marker = '✬';
         if (isEnd) marker = '⦿';
