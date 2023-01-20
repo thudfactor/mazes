@@ -1,16 +1,26 @@
 {
   "compilerOptions": {
-    "isolatedModules": true,
     "target": "ES2021",
-    "jsx": "react-jsx",
-    "baseUrl": ".",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
     "moduleResolution": "node",
-    "paths": {
-      "~*": ["./src/*"]
-    }
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
   },
   "include": [
-    "src/js/**/*.ts",
-    "src/js/**/*.tsx"
+    "src"
   ]
 }
