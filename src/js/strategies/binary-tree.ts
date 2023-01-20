@@ -1,4 +1,4 @@
-import Grid from './grid';
+import Grid from '../model/grid';
 import { arraySample } from '../util/index';
 
 export default class BinaryTree {

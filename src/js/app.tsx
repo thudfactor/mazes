@@ -1,10 +1,10 @@
-import Grid from './model/grid';
-import BinaryTree from './model/binary-tree';
-import Sidewinder from './model/sidewinder';
 import { useState, useEffect, useRef } from 'react';
-import { SVGRenderer } from './renderers/svg-renderer';
 import styled from 'styled-components';
+import Grid from './model/grid';
+import BinaryTree from './strategies/binary-tree';
+import Sidewinder from './strategies/sidewinder';
 import { ASCIIRenderer } from './renderers/ascii-renderer';
+import { SVGRenderer } from './renderers/svg-renderer';
 
 const StyledLayout = styled.div`
   position: absolute;

@@ -1,3 +1,5 @@
+import Distances from "./distances";
+
 type Neighbors = {
   north: Cell;
   east: Cell;
@@ -44,6 +46,25 @@ export default class Cell {
       return ((current.row === cell.row) && (current.column === cell.column));
     });
     return (found instanceof Cell);
+  }
+
+  distances() {
+    const distances = new Distances(this);
+    let frontier = [this];
+
+    while (frontier.length !== 0) {
+      const new_frontier = [];
+      frontier.forEach((cell) => {
+        cell.links.forEach((linked) => {
+          if (distances.at(linked)) return;
+          distances.to(linked, distances.at(cell) + 1);
+          new_frontier.push(linked);
+        });
+      });
+      frontier = new_frontier;
+    }
+
+    return distances;
   }
 }
 

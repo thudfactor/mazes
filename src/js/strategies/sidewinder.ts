@@ -1,6 +1,6 @@
-import Grid from './grid';
+import Grid from '../model/grid';
 import { arraySample, randomFrom } from '../util/index';
-import Cell from './cell';
+import Cell from '../model/cell';
 
 export default class Sidewinder {
   static on(grid:Grid) {
