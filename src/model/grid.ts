@@ -55,13 +55,13 @@ export default class Grid {
     return null;
   }
 
-  random_cell() {
+  random_cell(): Cell {
     const row = randomFrom(this.rows - 1);
     const col = randomFrom(this.columns - 1);
     return this.grid[row][col];
   }
 
-  get size() {
+  get size(): number {
     return this.rows * this.columns;
   }
 
