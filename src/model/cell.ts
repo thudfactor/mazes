@@ -1,10 +1,7 @@
 import Distances from "./distances";
 
 type Neighbors = {
-  north: Cell;
-  east: Cell;
-  south: Cell;
-  west: Cell;
+  [key: string]: Cell | null;
 }
 
 export default class Cell {
@@ -50,14 +47,19 @@ export default class Cell {
 
   distances() {
     const distances = new Distances(this);
-    let frontier = [this];
+    let frontier = [this as Cell];
 
     while (frontier.length !== 0) {
-      const new_frontier = [];
+      const new_frontier:Cell[] = [];
       frontier.forEach((cell) => {
+        const currentDistance = distances.at(cell);
+        if (currentDistance !== 0 && !currentDistance) {
+          console.error('no distance stored for ', cell);
+          return;
+        }
         cell.links.forEach((linked) => {
           if (distances.at(linked)) return;
-          distances.to(linked, distances.at(cell) + 1);
+          distances.to(linked, currentDistance + 1);
           new_frontier.push(linked);
         });
       });

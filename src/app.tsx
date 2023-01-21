@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import Grid from './model/grid';
-import Cell from './model/cell';
 import BinaryTree from './strategies/binary-tree';
 import Sidewinder from './strategies/sidewinder';
 import { ASCIIRenderer } from './renderers/ascii-renderer';
@@ -63,22 +62,22 @@ const StyledLayout = styled.div`
   }
 `
 
+function generateMaze(builder: string, rows: number, columns: number): Grid {
+  let fn = BinaryTree.on;
+  switch (builder) {
+    case 'sidewinder':
+      fn = Sidewinder.on;
+      break;
+  }
+  return fn(new Grid(rows,columns));
+}
+
 export function App() {
   const [size, setSize] = useState(20);
   const [builder, setBuilder] = useState('sidewinder');
   const [renderer, setRenderer] = useState('svg');
-  const [maze, setMaze] = useState(generateMaze());
+  const [maze, setMaze] = useState(generateMaze(builder, size, size));
   const [avatarPos, _setAvatarPos] = useState(maze.start);
-
-  function generateMaze():Grid {
-    let fn = BinaryTree.on;
-    switch (builder) {
-      case 'sidewinder':
-        fn = Sidewinder.on;
-        break;
-    }
-    return fn(new Grid(size,size));
-  }
   
   // this nonsense is due to using state hooks in event handlers
   const avatarPosRef = useRef(avatarPos);
@@ -87,44 +86,44 @@ export function App() {
     _setAvatarPos(data);
   }
 
-  function navigateAvatar(direction: string) {
+  const navigateAvatar = useCallback((direction: string) => {
     const ap = avatarPosRef.current;
     const { neighbors } = ap;
     const nextCell = neighbors[direction];
     if (nextCell && ap.linked(nextCell)) {
       setAvatarPos(nextCell);
     }
-  }
+  }, []);
 
-  function keyDown({ key }: { key: string; }) {
-    let direction = null;
-    if (['w','ArrowUp'].includes(key)) {
-      direction = 'north';
-    } else if (['a','ArrowLeft'].includes(key)) {
-      direction = 'west';
-    }
-    else if (['s','ArrowDown'].includes(key)) {
-      direction = 'south';
-    }
-    else if (['d','ArrowRight'].includes(key)) {
-      direction = 'east';
-    }
-    if (direction !== null) navigateAvatar(direction);
-  }
-
-  function rebuild() {
-    const newMaze = generateMaze();
+  const rebuild = useCallback(() => {
+    const newMaze = generateMaze(builder, size, size);
     setAvatarPos(newMaze.start);
     setMaze(newMaze);
-  }
+  }, [builder, size]);
 
   useEffect(() => {
+
+    function keyDown({ key }: { key: string; }) {
+      if (!['w','a','s','d'].includes(key)) return;
+      if (key === 'w') {
+        navigateAvatar('north')
+      } else if (key === 'a') {
+        navigateAvatar('west')
+      }
+      else if (['s'].includes(key)) {
+        navigateAvatar('south')
+      }
+      else if (['d'].includes(key)) {
+        navigateAvatar('east')
+      }
+    }
+
     globalThis.addEventListener('keydown',keyDown);
 
     return (() => {
       globalThis.removeEventListener('keydown',keyDown);
     });
-  }, []);
+  }, [navigateAvatar]);
 
   useEffect(() => {
     rebuild();
@@ -139,7 +138,7 @@ export function App() {
       <div className="controls">
         <h1>Mazes</h1>
         <p><button onClick={() => rebuild()}>Generate Maze</button></p>
-        <p>Arrow keys or WASD to move</p>
+        <p>Use WASD keys to move</p>
         <form onSubmit={(e) => e.preventDefault()}>
           <fieldset>
             <legend>Renderer</legend>

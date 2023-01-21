@@ -1,6 +1,6 @@
+import styled, { CSSProperties } from 'styled-components';
+import Cell from "../model/cell";
 import Grid from "../model/grid";
-import styled from 'styled-components';
-import Cell from "~js/model/cell";
 
 const StyledRenderer = styled.div`
   width: max-content;
@@ -20,6 +20,14 @@ type AsciiRendererProps = {
 
 export function ASCIIRenderer({ maze, avatar }:AsciiRendererProps) {
 
+  function contentOf(cell: Cell):string {
+    if (cell.equals(maze.start)) return '✬';
+    if (cell.equals(maze.end)) return '⦿';
+    if (avatar && cell.equals(avatar)) return '@';
+
+    return ' ';
+  }
+
   function renderMaze() {
     let output = `+${"---+".repeat(maze.columns)}\n`;
     const rowGen = maze.eachRow();
@@ -29,13 +37,8 @@ export function ASCIIRenderer({ maze, avatar }:AsciiRendererProps) {
       
       row.forEach(cell => {
         const { east, south } = cell.neighbors;
-        const isStart = cell.equals(maze.start);
-        const isEnd = cell.equals(maze.end);
-        const isAvatar = avatar && cell.equals(avatar);
-        let marker = ' ';
-        if (isStart) marker = '✬';
-        if (isEnd) marker = '⦿';
-        if (isAvatar) marker = '@';
+        let marker = contentOf(cell);
+
 
         const body = ` ${marker} `;
         const east_boundary = (east && cell.linked(east)) ? ' ' : '|';
@@ -49,10 +52,15 @@ export function ASCIIRenderer({ maze, avatar }:AsciiRendererProps) {
     return output;
   }
 
+  const customProperties = {
+    '--rows': maze.rows,
+    '--columns': maze.columns
+  } as CSSProperties;
+
   return (
     <>
       <p>Start at ✬ and proceed towards ⦿</p>
-      <StyledRenderer style={{"--rows": maze.rows, "--columns": maze.columns}} >{ renderMaze() }</StyledRenderer>
+      <StyledRenderer style={customProperties} >{ renderMaze() }</StyledRenderer>
     </>
   );
 }

@@ -35,6 +35,7 @@ export default class Grid {
   configureCells() {
     const allCells = this.eachCell();
     for (let c of allCells) {
+      if (!c) continue;
       const {row, column: col} = c;
       c.neighbors = {
         north: this.getCellAt(row - 1,col),

@@ -1,5 +1,5 @@
-import Grid from "~js/model/grid";
-import Cell from "~js/model/cell";
+import Grid from "../model/grid";
+import Cell from "..//model/cell";
 import { Avatar } from "../characters/avatar";
 import styled from 'styled-components';
 
@@ -40,6 +40,7 @@ function renderWalls(maze: Grid): JSX.Element {
   const cellsList = maze.eachCell();
   let pathdata:string[] = [];
   for (let cell of cellsList) {
+    if (!cell) continue;
     const { row, column, neighbors } = cell;
     const { east, south } = neighbors;
     const eastBoundary = (!east || !cell.linked(east));

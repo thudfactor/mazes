@@ -1,12 +1,12 @@
+import Cell from '../model/cell';
 import Grid from '../model/grid';
 import { arraySample, randomFrom } from '../util/index';
-import Cell from '../model/cell';
 
 export default class Sidewinder {
   static on(grid:Grid) {
     const rowGenerator = grid.eachRow();
     for (let row of rowGenerator) {
-      let run = [];
+      let run:Cell[] = [];
       row.forEach((c:Cell) => {
         run.push(c);
         const { east, north } = c.neighbors;
