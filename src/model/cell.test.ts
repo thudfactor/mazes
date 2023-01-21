@@ -22,6 +22,10 @@ describe('cell tests', ()=> {
     cell.south = s;
     cell.east = e;
     cell.west = w;
+    expect(cell.north).toBe(n);
+    expect(cell.south).toBe(s);
+    expect(cell.east).toBe(e);
+    expect(cell.west).toBe(w);
     expect(cell.neighbors.north).toBe(n);
     expect(cell.neighbors.south).toBe(s);
     expect(cell.neighbors.east).toBe(e);
@@ -107,5 +111,31 @@ describe('cell tests', ()=> {
     expect(d.at(cellB)).toBe(1);
     expect(d.at(cellC)).toBe(2);
     expect(d.at(cellD)).toBe(1);
+  });
+
+  test('caches distances', () => {
+    const cellA = new Cell(0,0);
+    const cellB = new Cell(0,1);
+    const cellC = new Cell(0,2);
+    const cellD = new Cell(1,0);
+    cellA.link(cellB);
+    cellB.link(cellC);
+    cellA.link(cellD);
+    const d = cellA.distances();
+    const e = cellA.distances();
+    expect(d).toBe(e);
+  });
+
+  test('invalidates distance cache on request', () => {
+    const cellA = new Cell(0,0);
+    const cellB = new Cell(0,1);
+    const cellC = new Cell(0,2);
+    const cellD = new Cell(1,0);
+    cellA.link(cellB);
+    cellB.link(cellC);
+    cellA.link(cellD);
+    const d = cellA.distances();
+    const e = cellA.distances(true);
+    expect(d).not.toBe(e);
   });
 });

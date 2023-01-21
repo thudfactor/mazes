@@ -6,15 +6,14 @@ export default class BinaryTree {
     const cellGenerator = grid.eachCell();
     for (let c of cellGenerator) {
       if (!c) continue;
-      const { north, east } = c.neighbors;
-      if(!north && east) {
-        c.link(east);
+      if(!c.north && c.east) {
+        c.link(c.east);
       }
-      if(!east && north) {
-        c.link(north);
+      if(!c.east && c.north) {
+        c.link(c.north);
       }
-      if (north && east) {
-        const randomNeighbor = arraySample([north, east]);
+      if (c.north && c.east) {
+        const randomNeighbor = arraySample([c.north, c.east]);
         c.link(randomNeighbor);
       }
     }

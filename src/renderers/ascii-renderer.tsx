@@ -1,6 +1,7 @@
 import styled, { CSSProperties } from 'styled-components';
 import Cell from "../model/cell";
 import Grid from "../model/grid";
+import Distances from '../model/distances';
 
 const StyledRenderer = styled.div`
   width: max-content;
@@ -19,12 +20,19 @@ type AsciiRendererProps = {
 }
 
 export function ASCIIRenderer({ maze, avatar }:AsciiRendererProps) {
+  let distances: Distances | null = null;
+  if(maze.start) {
+    distances = maze.start.distances();
+  }
 
   function contentOf(cell: Cell):string {
     if (cell.equals(maze.start)) return '✬';
     if (cell.equals(maze.end)) return '⦿';
     if (avatar && cell.equals(avatar)) return '@';
-
+    const thisDistance = distances?.at(cell);
+    if (thisDistance && thisDistance <= 9) {
+      return `${(thisDistance <= 9) ? thisDistance : ' '}`;
+    }
     return ' ';
   }
 

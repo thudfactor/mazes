@@ -9,17 +9,15 @@ export default class Sidewinder {
       let run:Cell[] = [];
       row.forEach((c:Cell) => {
         run.push(c);
-        const { east, north } = c.neighbors;
-        const atEastBoundary = !east;
-        const atNorthBoundary = !north;
-        const shouldCloseOut = atEastBoundary || 
-                (!atNorthBoundary && randomFrom(1) === 0);
+        const { eastBoundary, northBoundary } = grid.cellAtBoundaries(c);
+        const shouldCloseOut = eastBoundary || 
+                (!northBoundary && randomFrom(1) === 0);
         if (shouldCloseOut) {
           const member = arraySample(run);
-          if (member.neighbors.north) member.link(member.neighbors.north);
+          if (member.north) member.link(member.north);
           run = [];
-        } else {
-          c.link(east);
+        } else if (c.east) {
+          c.link(c.east);
         }
       });
     }

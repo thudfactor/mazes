@@ -9,6 +9,7 @@ describe('Distances', () => {
     expect(distances.cells().next().value).toBe(cell);
     expect(distances.at(cell)).toBe(0);
   });
+
   it('stores a new cell in the map with distance', () => {
     const cell = new Cell(0,0);
     const nCell = new Cell(0,1);

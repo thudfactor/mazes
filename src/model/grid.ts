@@ -37,12 +37,10 @@ export default class Grid {
     for (let c of allCells) {
       if (!c) continue;
       const {row, column: col} = c;
-      c.neighbors = {
-        north: this.getCellAt(row - 1,col),
-        south: this.getCellAt(row + 1,col),
-        west: this.getCellAt(row, col - 1),
-        east: this.getCellAt(row, col + 1)
-      }
+      c.north = this.getCellAt(row - 1,col);
+      c.south = this.getCellAt(row + 1,col);
+      c.west = this.getCellAt(row, col - 1);
+      c.east = this.getCellAt(row, col + 1);
     }
   }
 
@@ -79,6 +77,15 @@ export default class Grid {
     }
   }
 
+  cellAtBoundaries(c: Cell) {
+    return {
+      northBoundary: !c.north,
+      southBoundary: !c.south,
+      eastBoundary: !c.east,
+      westBoundary: !c.west
+    }
+  }
+
   // Default renderer; useful if running in a node context
   toString() {
     let output = `+${"---+".repeat(this.columns)}\n`;
@@ -88,16 +95,16 @@ export default class Grid {
       let bottom = "+";
       
       row.forEach(cell => {
-        const { east, south } = cell.neighbors;
         const isStart = cell.equals(this.start); 
         const isEnd = cell.equals(this.end);
+        const { eastBoundary, southBoundary } = this.cellAtBoundaries(cell);
         let marker = ' ';
         if (isStart) marker = '✬';
         if (isEnd) marker = '⦿';
         const body = ` ${marker} `;
-        const east_boundary = (east && cell.linked(east)) ? ' ' : '|';
+        const east_boundary = eastBoundary ? '|' : ' ';
         top += body + east_boundary;
-        const south_boundary = (south && cell.linked(south)) ? '   ' : '---';
+        const south_boundary = southBoundary ? '---' : '   ';
         bottom += south_boundary + '+';
       });
 

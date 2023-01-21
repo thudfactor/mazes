@@ -8,50 +8,18 @@ export default class Cell {
   row: number;
   column: number;
   links: Cell[];
-  neighbors: Neighbors;
+  north: Cell | null;
+  south: Cell | null;
+  east: Cell | null;
+  west: Cell | null;
+  private _distanceCache: Distances | null;
 
   constructor(row: number, column: number) {
     this.row = row;
     this.column = column;
     this.links = [];
-    this.neighbors = {
-      north: null,
-      east: null,
-      south: null,
-      west: null
-    }
-  }
-
-  set north(cell: Cell | null) {
-    this.neighbors.north = cell;
-  }
-
-  get north(): Cell | null {
-    return this.neighbors.north;
-  }
-
-  set south(cell: Cell | null) {
-    this.neighbors.south = cell;
-  }
-
-  get south(): Cell | null {
-    return this.neighbors.south;
-  }
-
-  set east(cell: Cell | null) {
-    this.neighbors.east = cell;
-  }
-
-  get east(): Cell | null {
-    return this.neighbors.east;
-  }
-
-  set west(cell: Cell | null) {
-    this.neighbors.west = cell;
-  }  
-
-  get west(): Cell | null {
-    return this.neighbors.west;
+    this.north = this.south = this.east = this.west = null;
+    this._distanceCache = null;
   }
 
   // Checks for equality with a cell by comparing the cells address
@@ -60,9 +28,10 @@ export default class Cell {
   }
 
   link(cell: Cell, bidi = true) {
-    if(!this.linked(cell)) {
+    if (!this.linked(cell)) {
       this.links.push(cell);
-      bidi && cell.link(this, false);  
+      this._clearDistances();
+      bidi && cell.link(this, false);
     }
   }
 
@@ -79,7 +48,25 @@ export default class Cell {
     return (found instanceof Cell);
   }
 
-  distances() {
+  get neighbors():Neighbors {
+    return {
+      'north': this.north,
+      'south': this.south,
+      'east': this.east,
+      'west': this.west
+    }
+  }
+
+  private _clearDistances() {
+    this._distanceCache = null;
+  }
+
+  // TODO: this allows a manual recalculation of distances
+  // but it would be good to invalidate the cache if any linking
+  // changes.
+  distances(recalc = false) {
+    if (this._distanceCache && !recalc) return this._distanceCache;
+    
     const distances = new Distances(this);
     let frontier = [this as Cell];
 
@@ -96,7 +83,7 @@ export default class Cell {
       });
       frontier = new_frontier;
     }
-
+    this._distanceCache = distances;
     return distances;
   }
 }

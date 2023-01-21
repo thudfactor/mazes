@@ -88,8 +88,7 @@ export function App() {
 
   const navigateAvatar = useCallback((direction: string) => {
     const ap = avatarPosRef.current;
-    const { neighbors } = ap;
-    const nextCell = neighbors[direction];
+    const nextCell = ap.neighbors[direction];
     if (nextCell && ap.linked(nextCell)) {
       setAvatarPos(nextCell);
     }
