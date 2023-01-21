@@ -6,6 +6,7 @@ class Distances {
 
   constructor(root:Cell) {
     this.root = root;
+    this.cellMap = new Map();
     this.cellMap.set(root, 0);
   }
 
@@ -13,7 +14,7 @@ class Distances {
     return this.cellMap.keys();
   }
 
-  at(target:Cell):number {
+  at(target:Cell):number | undefined {
     return this.cellMap.get(target);
   }
 

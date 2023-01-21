@@ -5,6 +5,7 @@ export default class BinaryTree {
   static on(grid:Grid) {
     const cellGenerator = grid.eachCell();
     for (let c of cellGenerator) {
+      if (!c) continue;
       const { north, east } = c.neighbors;
       if(!north && east) {
         c.link(east);
