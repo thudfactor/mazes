@@ -10,12 +10,13 @@ class Distances {
     this.cellMap.set(root, 0);
   }
 
-  get cells() {
+  cells() {
     return this.cellMap.keys();
   }
 
-  at(target:Cell):number | undefined {
-    return this.cellMap.get(target);
+  at(target:Cell):number {
+    const f = this.cellMap.get(target);
+    return (f !== undefined) ? f : -1;
   }
 
   to(cell: Cell, distance: number) {

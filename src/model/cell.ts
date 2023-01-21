@@ -22,25 +22,59 @@ export default class Cell {
     }
   }
 
+  set north(cell: Cell | null) {
+    this.neighbors.north = cell;
+  }
+
+  get north(): Cell | null {
+    return this.neighbors.north;
+  }
+
+  set south(cell: Cell | null) {
+    this.neighbors.south = cell;
+  }
+
+  get south(): Cell | null {
+    return this.neighbors.south;
+  }
+
+  set east(cell: Cell | null) {
+    this.neighbors.east = cell;
+  }
+
+  get east(): Cell | null {
+    return this.neighbors.east;
+  }
+
+  set west(cell: Cell | null) {
+    this.neighbors.west = cell;
+  }  
+
+  get west(): Cell | null {
+    return this.neighbors.west;
+  }
+
   // Checks for equality with a cell by comparing the cells address
   equals(cell: Cell):boolean {
     return this.row === cell.row && this.column === cell.column;
   }
 
   link(cell: Cell, bidi = true) {
-    this.links.push(cell);
-    bidi && cell.link(this, false);
+    if(!this.linked(cell)) {
+      this.links.push(cell);
+      bidi && cell.link(this, false);  
+    }
   }
 
   unlink(cell: Cell, bidi = true) {
-    const newLinks = this.links.filter((current) => ((current.row !== cell.row) || (current.column !== cell.column)));
+    const newLinks = this.links.filter((current) => (!cell.equals(current)));
     this.links = newLinks;
     bidi && cell.unlink(this, false);
   }
 
   linked(cell: Cell) {
     const found = this.links.find((current) => {
-      return ((current.row === cell.row) && (current.column === cell.column));
+      return (current.equals(cell));
     });
     return (found instanceof Cell);
   }
@@ -53,12 +87,9 @@ export default class Cell {
       const new_frontier:Cell[] = [];
       frontier.forEach((cell) => {
         const currentDistance = distances.at(cell);
-        if (currentDistance !== 0 && !currentDistance) {
-          console.error('no distance stored for ', cell);
-          return;
-        }
         cell.links.forEach((linked) => {
-          if (distances.at(linked)) return;
+          const ld = distances.at(linked);
+          if (ld >= 0) return;
           distances.to(linked, currentDistance + 1);
           new_frontier.push(linked);
         });
