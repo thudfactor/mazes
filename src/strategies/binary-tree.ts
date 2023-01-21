@@ -15,9 +15,7 @@ export default class BinaryTree {
       }
       if (north && east) {
         const randomNeighbor = arraySample([north, east]);
-        if (randomNeighbor) {
-          c.link(randomNeighbor);
-        }
+        c.link(randomNeighbor);
       }
     }
     return grid;
