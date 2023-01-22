@@ -30,8 +30,8 @@ export function ASCIIRenderer({ maze, avatar }:AsciiRendererProps) {
     if (cell.equals(maze.end)) return '⦿';
     if (avatar && cell.equals(avatar)) return '@';
     const thisDistance = distances?.at(cell);
-    if (thisDistance && thisDistance <= 9) {
-      return `${(thisDistance <= 9) ? thisDistance : ' '}`;
+    if (thisDistance) {
+      return `${(thisDistance < 36) ? thisDistance.toString(36) : ' '}`;
     }
     return ' ';
   }
