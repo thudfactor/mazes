@@ -17,9 +17,10 @@ const StyledRenderer = styled.div`
 type AsciiRendererProps = {
   maze: Grid;
   avatar?: Cell;
+  showDistance: Boolean
 }
 
-export function ASCIIRenderer({ maze, avatar }:AsciiRendererProps) {
+export function ASCIIRenderer({ maze, avatar, showDistance = false }:AsciiRendererProps) {
   let distances: Distances | null = null;
   if(maze.start) {
     distances = maze.start.distances();
@@ -30,7 +31,7 @@ export function ASCIIRenderer({ maze, avatar }:AsciiRendererProps) {
     if (cell.equals(maze.end)) return '⦿';
     if (avatar && cell.equals(avatar)) return '@';
     const thisDistance = distances?.at(cell);
-    if (thisDistance) {
+    if (showDistance && thisDistance) {
       return `${(thisDistance < 36) ? thisDistance.toString(36) : ' '}`;
     }
     return ' ';

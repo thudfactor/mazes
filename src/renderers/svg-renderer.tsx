@@ -12,7 +12,9 @@ const StyledSVG = styled.svg`
 
 type SVGRendererProps = {
   maze: Grid;
-  avatar?: Cell; 
+  avatar?: Cell;
+  showDistance: boolean;
+  showSolution: boolean;
 }
 
 function renderLandmarks(maze: Grid) {
@@ -36,19 +38,21 @@ function renderLandmarks(maze: Grid) {
   );
 }
 
-function renderDistance(maze: Grid): JSX.Element {
+function renderDistance(maze: Grid, showDistance: boolean, showSolution: boolean): JSX.Element {
+  if (!showDistance && !showSolution) return <></>;
   const distance = maze.start.distances();
   const solution = maze.solve();
-  const opacityStep = 1 / distance.maxDistance;
+  const opacityStep = 1 / distance.max.distance;
   const cellsList = maze.eachCell();
   const rectAr:JSX.Element[] = [];
   for (let cell of cellsList) {
     if (!cell ) continue;
+    const cellInPath = (solution && solution.includes(cell));
+    if (!showDistance && !cellInPath) continue;
     const x = cell.column * cellSize;
     const y = cell.row * cellSize;
-    const cellInPath = (solution && solution.includes(cell));
-    const opacity = (cellInPath) ? 1 : distance.at(cell) * opacityStep;
-    const fill = (cellInPath) ? "yellow" : "green";
+    const opacity = (cellInPath && showSolution) ? 1 : distance.at(cell) * opacityStep;
+    const fill = (cellInPath && showSolution) ? "yellow" : "green";
     rectAr.push (
       <rect 
         key={`cell-${cell.column}-${cell.row}`} 
@@ -95,7 +99,7 @@ function renderWalls(maze: Grid): JSX.Element {
   );
 }
 
-export function SVGRenderer({ maze, avatar }:SVGRendererProps) {
+export function SVGRenderer({ maze, avatar, showDistance = false, showSolution = false }:SVGRendererProps) {
   const { rows, columns } = maze;
   const height = rows * cellSize;
   const width = columns * cellSize;
@@ -107,7 +111,7 @@ export function SVGRenderer({ maze, avatar }:SVGRendererProps) {
         <rect x="0" y="0" width="100%" height="100%" fill="white" />
         <line strokeLinecap="round" strokeWidth="1" stroke="black" x1={0} y1={0} x2={width} y2={0} />
         <line strokeLinecap="round" strokeWidth="1" stroke="black" x1={0} y1={0} x2={0} y2={height} />
-        { renderDistance(maze) }
+        { renderDistance(maze, showDistance, showSolution) }
         { renderLandmarks(maze) }
         { renderWalls(maze) }
         { avatar && <Avatar x={avatar.column * cellSize} y={avatar.row * cellSize} size={cellSize} /> }

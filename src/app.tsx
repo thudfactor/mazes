@@ -69,13 +69,15 @@ function generateMaze(builder: string, rows: number, columns: number): Grid {
       fn = Sidewinder.on;
       break;
   }
-  return fn(new Grid(rows,columns));
+  return fn(new Grid(rows,columns)).longestPath();
 }
 
 export function App() {
   const [size, setSize] = useState(20);
   const [builder, setBuilder] = useState('sidewinder');
   const [renderer, setRenderer] = useState('svg');
+  const [showSolution, setShowSolution] = useState(false);
+  const [showDistance, setShowDistance] = useState(false);
   const [maze, setMaze] = useState(generateMaze(builder, size, size));
   const [avatarPos, _setAvatarPos] = useState(maze.start);
   
@@ -131,8 +133,19 @@ export function App() {
   return (
     <StyledLayout>
       <div className="maze">
-        { renderer === 'svg' && maze && <SVGRenderer maze={maze} avatar={avatarPos} /> }
-        { renderer === 'ascii' && <ASCIIRenderer maze={maze} avatar={avatarPos} /> }
+        { renderer === 'svg' && maze && 
+          <SVGRenderer 
+            showSolution={showSolution}
+            showDistance={showDistance} 
+            maze={maze} 
+            avatar={avatarPos} 
+          /> }
+        { renderer === 'ascii' && maze &&
+          <ASCIIRenderer  
+            showDistance={showDistance} 
+            maze={maze} 
+            avatar={avatarPos} 
+          /> }
       </div>
       <div className="controls">
         <h1>Mazes</h1>
@@ -153,6 +166,24 @@ export function App() {
               type="radio"
               name="renderer"
               value="ascii" /> ASCII</label>
+          </fieldset>
+          <fieldset>
+            <legend>Spoilers</legend>
+            <label><input 
+              onChange={() => setShowSolution(!showSolution)}
+              checked={showSolution}
+              disabled={renderer === 'ascii'}
+              type="checkbox"
+              name="show-solution"
+              value="show-solution"
+            /> Show Solution</label><br />
+            <label><input 
+              onChange={() => setShowDistance(!showDistance)}
+              checked={showDistance}
+              type="checkbox"
+              name="show-distance"
+              value="show-distance"
+            /> Show Distance</label>
           </fieldset>
           <fieldset>
             <legend>Build Strategy</legend>

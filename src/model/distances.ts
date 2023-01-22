@@ -3,13 +3,18 @@ import Cell from "./cell";
 class Distances {
   root: Cell;
   cellMap: Map<Cell, number>;
-  maxDistance: number;
-
+  max: {
+    cell: Cell;
+    distance: number;
+  }
   constructor(root:Cell) {
     this.root = root;
     this.cellMap = new Map();
     this.cellMap.set(root, 0);
-    this.maxDistance = 0;
+    this.max = {
+      cell: root,
+      distance: 0,
+    }
   }
 
   cells() {
@@ -23,8 +28,11 @@ class Distances {
 
   to(cell: Cell, distance: number) {
     this.cellMap.set(cell, distance);
-    if (distance > this.maxDistance) {
-      this.maxDistance = distance;
+    if (distance > this.max.distance) {
+      this.max = {
+        distance,
+        cell
+      }
     }
   }
 }

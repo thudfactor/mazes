@@ -119,6 +119,18 @@ export default class Grid {
     return path;
   }
 
+  longestPath(): Grid {
+    const distances_1 = this.grid[0][0].distances();
+    const newStart = distances_1.max.cell;
+    const distances_2 = newStart.distances();
+    const newEnd = distances_2.max.cell;
+    this.start = newStart;
+    this.end = newEnd;
+    this.solution = false;
+    this.solve();
+    return this;
+  }
+
   solve(): Cell[] | false {
     if(!this.solution) {
       this.solution = this.pathFrom(this.start, this.end);
