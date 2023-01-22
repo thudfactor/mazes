@@ -4,15 +4,18 @@ import { arrayOf, randomFrom } from '../util/index';
 export default class Grid {
   rows: number;
   columns: number;
-  grid: Cell[][];
   start: Cell;
   end: Cell;
+  grid: Cell[][];
+  solution: Cell[] | false;
 
   constructor(rows: number, columns: number, randomizeGoals: boolean = false) {
+    //console.log('grid constructor called');
     this.rows = rows;
     this.columns = columns;
     this.grid = this.prepareGrid();
     this.configureCells();
+    this.solution = false;
 
     this.getCellAt.bind(this);
 
@@ -26,7 +29,6 @@ export default class Grid {
       this.start = this.grid[rows - 1][0];
       this.end = this.grid[0][columns - 1];
     }
-    
   }
 
   prepareGrid(): Cell[][] {
@@ -90,6 +92,38 @@ export default class Grid {
       eastBoundary: !c.east,
       westBoundary: !c.west
     }
+  }
+
+  pathFrom(start: Cell, goal: Cell): Cell[] | false {
+    let current = goal;
+    const path = [goal];
+    const distances = start.distances();
+    while (!current.equals(start)) {
+      let maybe;
+      if (current.links.length === 0) {
+        console.warn('no solution');
+        return false;
+      }
+      for (let j = 0; j < current.links.length; j++) {
+        let cell = current.links[j];
+        if (distances.at(cell) < distances.at(current)) {
+          maybe = cell;
+          break;
+        }
+      }
+      if (maybe) {
+        current = maybe;
+        path.push(current);
+      }
+    }
+    return path;
+  }
+
+  solve(): Cell[] | false {
+    if(!this.solution) {
+      this.solution = this.pathFrom(this.start, this.end);
+    }
+    return this.solution;
   }
 
   // Default renderer; useful if running in a node context

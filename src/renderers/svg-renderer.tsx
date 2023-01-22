@@ -38,6 +38,7 @@ function renderLandmarks(maze: Grid) {
 
 function renderDistance(maze: Grid): JSX.Element {
   const distance = maze.start.distances();
+  const solution = maze.solve();
   const opacityStep = 1 / distance.maxDistance;
   const cellsList = maze.eachCell();
   const rectAr:JSX.Element[] = [];
@@ -45,9 +46,18 @@ function renderDistance(maze: Grid): JSX.Element {
     if (!cell ) continue;
     const x = cell.column * cellSize;
     const y = cell.row * cellSize;
-    const opacity = distance.at(cell) * opacityStep;
+    const cellInPath = (solution && solution.includes(cell));
+    const opacity = (cellInPath) ? 1 : distance.at(cell) * opacityStep;
+    const fill = (cellInPath) ? "yellow" : "green";
     rectAr.push (
-      <rect key={`cell-${cell.column}-${cell.row}`} x={x} y={y} width={cellSize} height={cellSize} fill="green" fillOpacity={opacity} />
+      <rect 
+        key={`cell-${cell.column}-${cell.row}`} 
+        x={x} 
+        y={y} 
+        width={cellSize} 
+        height={cellSize} 
+        fill={fill} 
+        fillOpacity={opacity} />
     )
   }
   return (

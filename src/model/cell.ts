@@ -64,7 +64,7 @@ export default class Cell {
   // TODO: this allows a manual recalculation of distances
   // but it would be good to invalidate the cache if any linking
   // changes.
-  distances(recalc = false) {
+  distances(recalc = false): Distances {
     if (this._distanceCache && !recalc) return this._distanceCache;
     
     const distances = new Distances(this);
