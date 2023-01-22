@@ -36,6 +36,27 @@ function renderLandmarks(maze: Grid) {
   );
 }
 
+function renderDistance(maze: Grid): JSX.Element {
+  const distance = maze.start.distances();
+  const opacityStep = 1 / distance.maxDistance;
+  const cellsList = maze.eachCell();
+  const rectAr:JSX.Element[] = [];
+  for (let cell of cellsList) {
+    if (!cell ) continue;
+    const x = cell.column * cellSize;
+    const y = cell.row * cellSize;
+    const opacity = distance.at(cell) * opacityStep;
+    rectAr.push (
+      <rect key={`cell-${cell.column}-${cell.row}`} x={x} y={y} width={cellSize} height={cellSize} fill="green" fillOpacity={opacity} />
+    )
+  }
+  return (
+    <g className="distances">
+      { rectAr }
+    </g>
+  )
+};
+
 function renderWalls(maze: Grid): JSX.Element {
   const cellsList = maze.eachCell();
   let pathdata:string[] = [];
@@ -76,6 +97,7 @@ export function SVGRenderer({ maze, avatar }:SVGRendererProps) {
         <rect x="0" y="0" width="100%" height="100%" fill="white" />
         <line strokeLinecap="round" strokeWidth="1" stroke="black" x1={0} y1={0} x2={width} y2={0} />
         <line strokeLinecap="round" strokeWidth="1" stroke="black" x1={0} y1={0} x2={0} y2={height} />
+        { renderDistance(maze) }
         { renderLandmarks(maze) }
         { renderWalls(maze) }
         { avatar && <Avatar x={avatar.column * cellSize} y={avatar.row * cellSize} size={cellSize} /> }

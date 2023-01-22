@@ -8,7 +8,7 @@ export default class Grid {
   start: Cell;
   end: Cell;
 
-  constructor(rows: number, columns: number) {
+  constructor(rows: number, columns: number, randomizeGoals: boolean = false) {
     this.rows = rows;
     this.columns = columns;
     this.grid = this.prepareGrid();
@@ -16,11 +16,17 @@ export default class Grid {
 
     this.getCellAt.bind(this);
 
-    const startCol = (randomFrom(1) === 0) ? 0 : this.columns - 1;
-    const endCol = (startCol === 0) ? this.columns - 1 : 0;
-
-    this.start = this.grid[randomFrom(this.rows - 1)][startCol];
-    this.end = this.grid[randomFrom(this.rows - 1)][endCol];
+    if (randomizeGoals) {
+      const startCol = (randomFrom(1) === 0) ? 0 : this.columns - 1;
+      const endCol = (startCol === 0) ? this.columns - 1 : 0;
+  
+      this.start = this.grid[randomFrom(this.rows - 1)][startCol];
+      this.end = this.grid[randomFrom(this.rows - 1)][endCol];  
+    } else {
+      this.start = this.grid[rows - 1][0];
+      this.end = this.grid[0][columns - 1];
+    }
+    
   }
 
   prepareGrid(): Cell[][] {
