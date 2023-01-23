@@ -5,6 +5,7 @@ import BinaryTree from './strategies/binary-tree';
 import Sidewinder from './strategies/sidewinder';
 import { ASCIIRenderer } from './renderers/ascii-renderer';
 import { SVGRenderer } from './renderers/svg-renderer';
+import AldousBroder from './strategies/aldous-broder';
 
 const StyledLayout = styled.div`
   position: absolute;
@@ -68,13 +69,16 @@ function generateMaze(builder: string, rows: number, columns: number): Grid {
     case 'sidewinder':
       fn = Sidewinder.on;
       break;
+    case 'aldous':
+      fn = AldousBroder.on;
+      break;
   }
   return fn(new Grid(rows,columns)).longestPath();
 }
 
 export function App() {
   const [size, setSize] = useState(20);
-  const [builder, setBuilder] = useState('sidewinder');
+  const [builder, setBuilder] = useState('aldous');
   const [renderer, setRenderer] = useState('svg');
   const [showSolution, setShowSolution] = useState(false);
   const [showDistance, setShowDistance] = useState(false);
@@ -188,6 +192,12 @@ export function App() {
           <fieldset>
             <legend>Build Strategy</legend>
             <p>Changing this will reset the maze.</p>
+            <label><input
+              onChange={() => setBuilder("aldous")}
+              checked={builder === 'aldous'}
+              type="radio"
+              name="builder"
+              value="sidewinder" /> Aldous-Broder</label><br/>
             <label><input
               onChange={() => setBuilder("sidewinder")}
               checked={builder === 'sidewinder'}

@@ -3,11 +3,11 @@ import Grid from '../model/grid';
 import { arraySample, randomFrom } from '../util/index';
 
 export default class Sidewinder {
-  static on(grid:Grid) {
+  static * step(grid:Grid) {
     const rowGenerator = grid.eachRow();
     for (let row of rowGenerator) {
       let run:Cell[] = [];
-      row.forEach((c:Cell) => {
+      for (let c of row) {
         run.push(c);
         const { eastBoundary, northBoundary } = grid.cellAtBoundaries(c);
         const shouldCloseOut = eastBoundary || 
@@ -19,8 +19,20 @@ export default class Sidewinder {
         } else if (c.east) {
           c.link(c.east);
         }
-      });
+        yield grid;
+      }
     }
+  }
+
+  // executes all the steps at once
+  static on(grid:Grid): Grid {
+    const stepper = Sidewinder.step(grid);
+    let i = 0;
+    // eslint-disable-next-line
+    for (let s of stepper) {
+      i += 1;
+    }
+    console.log(`Sidewinder tree in ${i}`);
     return grid;
   }
 }

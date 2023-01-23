@@ -49,15 +49,15 @@ function renderDistance(maze: Grid, showDistance: boolean, showSolution: boolean
     if (!cell ) continue;
     const cellInPath = (solution && solution.includes(cell));
     if (!showDistance && !cellInPath) continue;
-    const x = cell.column * cellSize;
-    const y = cell.row * cellSize;
-    const opacity = (cellInPath && showSolution) ? 1 : distance.at(cell) * opacityStep;
+    const opacity = (cellInPath && showSolution) 
+      ? 1 
+      : distance.at(cell) * opacityStep;
     const fill = (cellInPath && showSolution) ? "yellow" : "green";
     rectAr.push (
       <rect 
         key={`cell-${cell.column}-${cell.row}`} 
-        x={x} 
-        y={y} 
+        x={cell.column * cellSize} 
+        y={cell.row * cellSize} 
         width={cellSize} 
         height={cellSize} 
         fill={fill} 
