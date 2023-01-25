@@ -1,4 +1,19 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+    toggleShowDistance, 
+    toggleShowSolution,
+    setSize,
+    setRenderer,
+    setStrategy,
+    selectRenderer,
+    selectStrategy,
+    selectShowDistance,
+    selectShowSolution,
+    selectSize,
+    Renderer,
+    Strategy
+} from './store/options-slice';
 import styled from 'styled-components';
 import Grid from './model/grid';
 import BinaryTree from './strategies/binary-tree';
@@ -63,25 +78,18 @@ const StyledLayout = styled.div`
   }
 `
 
-function generateMaze(builder: string, rows: number, columns: number): Grid {
-  let fn = BinaryTree.on;
-  switch (builder) {
-    case 'sidewinder':
-      fn = Sidewinder.on;
-      break;
-    case 'aldous':
-      fn = AldousBroder.on;
-      break;
-  }
-  return fn(new Grid(rows,columns)).longestPath();
+function generateMaze(builder: any, rows: number, columns: number): Grid {
+  return builder(new Grid(rows,columns)).longestPath();
 }
 
 export function App() {
-  const [size, setSize] = useState(20);
-  const [builder, setBuilder] = useState('aldous');
-  const [renderer, setRenderer] = useState('svg');
-  const [showSolution, setShowSolution] = useState(false);
-  const [showDistance, setShowDistance] = useState(false);
+  const dispatch = useDispatch();
+  const showSolution = useSelector(selectShowSolution);
+  const showDistance = useSelector(selectShowDistance);
+  const size = useSelector(selectSize);
+  const builder = useSelector(selectStrategy);
+  const RenderElement = useSelector(selectRenderer);
+
   const [maze, setMaze] = useState(generateMaze(builder, size, size));
   const [avatarPos, _setAvatarPos] = useState(maze.start);
   
@@ -137,19 +145,14 @@ export function App() {
   return (
     <StyledLayout>
       <div className="maze">
-        { renderer === 'svg' && maze && 
-          <SVGRenderer 
+        { maze && 
+          <RenderElement
             showSolution={showSolution}
             showDistance={showDistance} 
             maze={maze} 
             avatar={avatarPos} 
-          /> }
-        { renderer === 'ascii' && maze &&
-          <ASCIIRenderer  
-            showDistance={showDistance} 
-            maze={maze} 
-            avatar={avatarPos} 
-          /> }
+          /> 
+        }
       </div>
       <div className="controls">
         <h1>Mazes</h1>
@@ -159,14 +162,14 @@ export function App() {
           <fieldset>
             <legend>Renderer</legend>
             <label><input
-              onChange={() => setRenderer("svg")}
-              checked={renderer === 'svg'}
+              onChange={() => dispatch(setRenderer(Renderer.SVG))}
+              checked={RenderElement === SVGRenderer}
               type="radio"
               name="renderer"
               value="svg" /> SVG</label><br/>
             <label><input 
-              onChange={() => setRenderer("ascii")}
-              checked={renderer === 'ascii'}
+              onChange={() => dispatch(setRenderer(Renderer.ASCII))}
+              checked={RenderElement === ASCIIRenderer}
               type="radio"
               name="renderer"
               value="ascii" /> ASCII</label>
@@ -174,15 +177,15 @@ export function App() {
           <fieldset>
             <legend>Spoilers</legend>
             <label><input 
-              onChange={() => setShowSolution(!showSolution)}
+              onChange={() => dispatch(toggleShowSolution())}
               checked={showSolution}
-              disabled={renderer === 'ascii'}
+              disabled={RenderElement === ASCIIRenderer}
               type="checkbox"
               name="show-solution"
               value="show-solution"
             /> Show Solution</label><br />
             <label><input 
-              onChange={() => setShowDistance(!showDistance)}
+              onChange={() => dispatch(toggleShowDistance())}
               checked={showDistance}
               type="checkbox"
               name="show-distance"
@@ -193,20 +196,20 @@ export function App() {
             <legend>Build Strategy</legend>
             <p>Changing this will reset the maze.</p>
             <label><input
-              onChange={() => setBuilder("aldous")}
-              checked={builder === 'aldous'}
+              onChange={() => dispatch(setStrategy(Strategy.AldousBroder))}
+              checked={builder === AldousBroder.on}
               type="radio"
               name="builder"
               value="sidewinder" /> Aldous-Broder</label><br/>
             <label><input
-              onChange={() => setBuilder("sidewinder")}
-              checked={builder === 'sidewinder'}
+              onChange={() => dispatch(setStrategy(Strategy.Sidewinder))}
+              checked={builder === Sidewinder.on}
               type="radio"
               name="builder"
               value="sidewinder" /> Sidewinder</label><br/>
             <label><input 
-              onChange={() => setBuilder("binarytree")}
-              checked={builder === 'binarytree'}
+              onChange={() => dispatch(setStrategy(Strategy.BinaryTree))}
+              checked={builder === BinaryTree.on}
               type="radio"
               name="builder"
               value="binarytree" /> Binary Tree</label>
@@ -217,7 +220,7 @@ export function App() {
             <label><input 
               type="range" 
               value={size}
-              onChange={(e) => setSize(parseInt(e.target.value))}
+              onChange={(e) => dispatch(setSize(parseInt(e.target.value)))}
               min={5} 
               max={50} 
               step={5} /> Size ({size})</label>
