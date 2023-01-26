@@ -1,26 +1,14 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
-    toggleShowDistance, 
-    toggleShowSolution,
-    setSize,
-    setRenderer,
-    setStrategy,
     selectRenderer,
     selectStrategy,
-    selectShowDistance,
-    selectShowSolution,
     selectSize,
-    Renderer,
-    Strategy
 } from './store/options-slice';
 import styled from 'styled-components';
 import Grid from './model/grid';
-import BinaryTree from './strategies/binary-tree';
-import Sidewinder from './strategies/sidewinder';
-import { ASCIIRenderer } from './renderers/ascii-renderer';
-import { SVGRenderer } from './renderers/svg-renderer';
-import AldousBroder from './strategies/aldous-broder';
+import { Settings } from './components/settings';
+import { Navigator } from './components/navigator';
 
 const StyledLayout = styled.div`
   position: absolute;
@@ -65,14 +53,6 @@ const StyledLayout = styled.div`
     text-align: center;
   }
 
-  .navigation {
-    button {
-      display: inline-block;
-      font-size: 2rem;
-      margin: .5rem;
-    }
-  }
-
   fieldset {
     text-align: left;
   }
@@ -83,9 +63,6 @@ function generateMaze(builder: any, rows: number, columns: number): Grid {
 }
 
 export function App() {
-  const dispatch = useDispatch();
-  const showSolution = useSelector(selectShowSolution);
-  const showDistance = useSelector(selectShowDistance);
   const size = useSelector(selectSize);
   const builder = useSelector(selectStrategy);
   const RenderElement = useSelector(selectRenderer);
@@ -147,8 +124,6 @@ export function App() {
       <div className="maze">
         { maze && 
           <RenderElement
-            showSolution={showSolution}
-            showDistance={showDistance} 
             maze={maze} 
             avatar={avatarPos} 
           /> 
@@ -157,81 +132,8 @@ export function App() {
       <div className="controls">
         <h1>Mazes</h1>
         <p><button onClick={() => rebuild()}>Generate Maze</button></p>
-        <p>Use WASD keys to move</p>
-        <form onSubmit={(e) => e.preventDefault()}>
-          <fieldset>
-            <legend>Renderer</legend>
-            <label><input
-              onChange={() => dispatch(setRenderer(Renderer.SVG))}
-              checked={RenderElement === SVGRenderer}
-              type="radio"
-              name="renderer"
-              value="svg" /> SVG</label><br/>
-            <label><input 
-              onChange={() => dispatch(setRenderer(Renderer.ASCII))}
-              checked={RenderElement === ASCIIRenderer}
-              type="radio"
-              name="renderer"
-              value="ascii" /> ASCII</label>
-          </fieldset>
-          <fieldset>
-            <legend>Spoilers</legend>
-            <label><input 
-              onChange={() => dispatch(toggleShowSolution())}
-              checked={showSolution}
-              disabled={RenderElement === ASCIIRenderer}
-              type="checkbox"
-              name="show-solution"
-              value="show-solution"
-            /> Show Solution</label><br />
-            <label><input 
-              onChange={() => dispatch(toggleShowDistance())}
-              checked={showDistance}
-              type="checkbox"
-              name="show-distance"
-              value="show-distance"
-            /> Show Distance</label>
-          </fieldset>
-          <fieldset>
-            <legend>Build Strategy</legend>
-            <p>Changing this will reset the maze.</p>
-            <label><input
-              onChange={() => dispatch(setStrategy(Strategy.AldousBroder))}
-              checked={builder === AldousBroder.on}
-              type="radio"
-              name="builder"
-              value="sidewinder" /> Aldous-Broder</label><br/>
-            <label><input
-              onChange={() => dispatch(setStrategy(Strategy.Sidewinder))}
-              checked={builder === Sidewinder.on}
-              type="radio"
-              name="builder"
-              value="sidewinder" /> Sidewinder</label><br/>
-            <label><input 
-              onChange={() => dispatch(setStrategy(Strategy.BinaryTree))}
-              checked={builder === BinaryTree.on}
-              type="radio"
-              name="builder"
-              value="binarytree" /> Binary Tree</label>
-          </fieldset>
-          <fieldset>
-            <legend>Maze Attributes</legend>
-            <p>Changing this will reset the maze.</p>
-            <label><input 
-              type="range" 
-              value={size}
-              onChange={(e) => dispatch(setSize(parseInt(e.target.value)))}
-              min={5} 
-              max={50} 
-              step={5} /> Size ({size})</label>
-          </fieldset>
-          <div className="navigation">
-            <legend>Navigate</legend>
-            <button onClick={() => navigateAvatar('north')}>↑</button><br />
-            <button onClick={() => navigateAvatar('west')}>←</button> <button onClick={() => navigateAvatar('east')}>→</button><br />
-            <button onClick={() => navigateAvatar('south')}>↓</button>
-          </div>
-        </form>
+        <Settings />
+        <Navigator navigate={navigateAvatar} />
       </div>
       <div className="meta">
         <p>Code adapted from <a href="http://www.mazesforprogrammers.com/">Mazes for Programmers</a> by Jamis Buck. <a href="https://github.com/thudfactor/mazes">Source code on GitHub</a>.</p>

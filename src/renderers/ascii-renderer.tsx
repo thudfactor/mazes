@@ -2,6 +2,8 @@ import styled, { CSSProperties } from 'styled-components';
 import Cell from "../model/cell";
 import Grid from "../model/grid";
 import Distances from '../model/distances';
+import { useSelector } from 'react-redux';
+import { selectShowDistance } from '../store/options-slice';
 
 const StyledRenderer = styled.div`
   width: max-content;
@@ -17,10 +19,11 @@ const StyledRenderer = styled.div`
 type AsciiRendererProps = {
   maze: Grid;
   avatar?: Cell;
-  showDistance: Boolean
 }
 
-export function ASCIIRenderer({ maze, avatar, showDistance = false }:AsciiRendererProps) {
+export function ASCIIRenderer({ maze, avatar }:AsciiRendererProps) {
+  const showDistance = useSelector(selectShowDistance);
+
   let distances: Distances | null = null;
   if(maze.start) {
     distances = maze.start.distances();

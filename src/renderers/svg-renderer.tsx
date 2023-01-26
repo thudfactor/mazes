@@ -2,6 +2,9 @@ import Grid from "../model/grid";
 import Cell from "..//model/cell";
 import { Avatar } from "../characters/avatar";
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { selectShowDistance, selectShowSolution } from '../store/options-slice';
+
 
 const cellSize = 10;
 
@@ -13,8 +16,6 @@ const StyledSVG = styled.svg`
 type SVGRendererProps = {
   maze: Grid;
   avatar?: Cell;
-  showDistance: boolean;
-  showSolution: boolean;
 }
 
 function renderLandmarks(maze: Grid) {
@@ -99,8 +100,11 @@ function renderWalls(maze: Grid): JSX.Element {
   );
 }
 
-export function SVGRenderer({ maze, avatar, showDistance = false, showSolution = false }:SVGRendererProps) {
+export function SVGRenderer({ maze, avatar }:SVGRendererProps) {
   const { rows, columns } = maze;
+  const showDistance = useSelector(selectShowDistance);
+  const showSolution = useSelector(selectShowSolution);
+
   const height = rows * cellSize;
   const width = columns * cellSize;
 
