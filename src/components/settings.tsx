@@ -1,23 +1,16 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ASCIIRenderer } from '../renderers/ascii-renderer';
 import { SVGRenderer } from '../renderers/svg-renderer';
+import {
+  Renderer, selectRenderer, selectShowDistance,
+  selectShowSolution,
+  selectSize, selectStrategy, setRenderer, setSize, setStrategy, Strategy, toggleShowDistance,
+  toggleShowSolution
+} from '../store/options-slice';
 import AldousBroder from '../strategies/aldous-broder';
 import BinaryTree from '../strategies/binary-tree';
 import Sidewinder from '../strategies/sidewinder';
-import {
-    toggleShowDistance, 
-    toggleShowSolution,
-    setSize,
-    setRenderer,
-    setStrategy,
-    selectRenderer,
-    selectStrategy,
-    selectShowDistance,
-    selectShowSolution,
-    selectSize,
-    Renderer,
-    Strategy
-} from '../store/options-slice';
+import Wilsons from '../strategies/wilsons';
 
 export const Settings = () => {
   const dispatch = useDispatch();
@@ -37,7 +30,7 @@ export const Settings = () => {
         type="radio"
         name="renderer"
         value="svg" /> SVG</label><br/>
-      <label><input 
+      <label><input
         onChange={() => dispatch(setRenderer(Renderer.ASCII))}
         checked={RenderElement === ASCIIRenderer}
         type="radio"
@@ -46,7 +39,7 @@ export const Settings = () => {
     </fieldset>
     <fieldset>
       <legend>Spoilers</legend>
-      <label><input 
+      <label><input
         onChange={() => dispatch(toggleShowSolution())}
         checked={showSolution || false}
         disabled={RenderElement === ASCIIRenderer}
@@ -54,7 +47,7 @@ export const Settings = () => {
         name="show-solution"
         value="show-solution"
       /> Show Solution</label><br />
-      <label><input 
+      <label><input
         onChange={() => dispatch(toggleShowDistance())}
         checked={showDistance || false}
         type="checkbox"
@@ -66,18 +59,24 @@ export const Settings = () => {
       <legend>Build Strategy</legend>
       <p>Changing this will reset the maze.</p>
       <label><input
+        onChange={() => dispatch(setStrategy(Strategy.Wilsons))}
+        checked={builder === Wilsons.on}
+        type="radio"
+        name="builder"
+        value="wilsons" /> Wilsons</label><br/>
+      <label><input
         onChange={() => dispatch(setStrategy(Strategy.AldousBroder))}
         checked={builder === AldousBroder.on}
         type="radio"
         name="builder"
-        value="sidewinder" /> Aldous-Broder</label><br/>
+        value="aldous" /> Aldous-Broder</label><br/>
       <label><input
         onChange={() => dispatch(setStrategy(Strategy.Sidewinder))}
         checked={builder === Sidewinder.on}
         type="radio"
         name="builder"
         value="sidewinder" /> Sidewinder</label><br/>
-      <label><input 
+      <label><input
         onChange={() => dispatch(setStrategy(Strategy.BinaryTree))}
         checked={builder === BinaryTree.on}
         type="radio"
@@ -87,12 +86,12 @@ export const Settings = () => {
     <fieldset>
       <legend>Maze Attributes</legend>
       <p>Changing this will reset the maze.</p>
-      <label><input 
-        type="range" 
+      <label><input
+        type="range"
         value={size}
         onChange={(e) => dispatch(setSize(parseInt(e.target.value)))}
-        min={5} 
-        max={50} 
+        min={5}
+        max={50}
         step={5} /> Size ({size})</label>
     </fieldset>
     </form>

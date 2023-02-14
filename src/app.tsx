@@ -1,15 +1,13 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import {
-    selectRenderer,
-    selectStrategy,
-    selectSize,
-} from './store/options-slice';
-import Grid from './model/grid';
-import { Settings } from './components/settings';
-import { Navigator } from './components/navigator';
 import { StyledControls, StyledLayout, StyledMaze } from './components/layout';
 import { Meta } from './components/meta';
+import { Navigator } from './components/navigator';
+import { Settings } from './components/settings';
+import Grid from './model/grid';
+import {
+  selectRenderer, selectSize, selectStrategy
+} from './store/options-slice';
 
 function generateMaze(builder: any, rows: number, columns: number): Grid {
   return builder(new Grid(rows,columns)).longestPath();
@@ -22,7 +20,7 @@ export function App() {
 
   const [maze, setMaze] = useState(() => generateMaze(builder, size, size));
   const [avatarPos, _setAvatarPos] = useState(() => maze.start);
-  
+
   // this nonsense is due to using state hooks in event handlers
   const avatarPosRef = useRef(avatarPos);
   const setAvatarPos = (data:any ) => {
@@ -69,18 +67,17 @@ export function App() {
   }, [navigateAvatar]);
 
   useEffect(() => {
-    console.log('useEffect Running', size, builder, rebuild);
     rebuild();
   }, [size, builder, rebuild])
 
   return (
     <StyledLayout>
       <StyledMaze>
-        { maze && 
+        { maze &&
           <RenderElement
-            maze={maze} 
-            avatar={avatarPos} 
-          /> 
+            maze={maze}
+            avatar={avatarPos}
+          />
         }
       </StyledMaze>
       <StyledControls>

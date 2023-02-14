@@ -8,50 +8,46 @@ export default class Wilsons {
   static * step(grid:Grid) {
     const unvisited: Cell[] = [];
     const gridGenerator = grid.eachCell();
-    
+
+    // Push all cells onto the unvisited queue
     for (let c of gridGenerator) {
       if (c) unvisited.push(c);
     }
 
+    // Pick one at random, remove it from the unvisited array
     const first = arraySample(unvisited);
     const firstIndex = unvisited.indexOf(first);
     unvisited.splice(firstIndex, 1);
 
     let counter = 0
-    while (unvisited.length > 0 && counter < 18000) {
+    while (unvisited.length > 0 && counter < 1800) {
       let cell = arraySample(unvisited);
       const path = [cell];
-      
+
       while (unvisited.includes(cell)) {
-        cell = arraySample(Object.values(cell.neighbors).filter((v)=> {
+        const nonNullNeighbors = Object.values(cell.neighbors).filter((v) => {
           return (v !== null);
-        }));
+        });
+        cell = arraySample(nonNullNeighbors);
         const position = path.indexOf(cell);
-        console.log(position, cell, path);
         if (position >= 0) {
-          path.splice(position);
+          path.splice(position + 1);
         } else {
           path.push(cell);
         }
       }
-      //console.log('path length', path.length);
 
-      let i = 0;
-      do {
-        if(!path[i + 1]) {
-          console.log(path);
-        } else {
-          path[i].link(path[i+1]);
-          unvisited.splice(unvisited.indexOf(path[i]), 1);  
-        }
-        i++;
-      } while (i < path.length - 2);
+      for(let i = 0; i <= path.length - 2; i++) {
+        path[i].link(path[i+1]);
+        unvisited.splice(unvisited.indexOf(path[i]), 1);
+      }
       console.log('unvisited length', unvisited.length);
       counter++;
       yield grid;
     }
     console.log('counter', counter);
   }
+
   // executes all the steps at once
   static on(grid:Grid): Grid {
     const stepper = Wilsons.step(grid);
