@@ -9,6 +9,7 @@ import {
 } from '../store/options-slice';
 import AldousBroder from '../strategies/aldous-broder';
 import BinaryTree from '../strategies/binary-tree';
+import HuntKill from '../strategies/hunt-kill';
 import Sidewinder from '../strategies/sidewinder';
 import Wilsons from '../strategies/wilsons';
 
@@ -58,6 +59,12 @@ export const Settings = () => {
     <fieldset>
       <legend>Build Strategy</legend>
       <p>Changing this will reset the maze.</p>
+      <label><input
+        onChange={() => dispatch(setStrategy(Strategy.HuntKill))}
+        checked={builder === HuntKill.on}
+        type="radio"
+        name="builder"
+        value="huntkill" /> Hunt and Kill</label><br/>
       <label><input
         onChange={() => dispatch(setStrategy(Strategy.Wilsons))}
         checked={builder === Wilsons.on}

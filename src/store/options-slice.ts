@@ -3,6 +3,7 @@ import { ASCIIRenderer } from '../renderers/ascii-renderer';
 import { SVGRenderer } from '../renderers/svg-renderer';
 import AldousBroder from '../strategies/aldous-broder';
 import BinaryTree from '../strategies/binary-tree';
+import HuntKill from '../strategies/hunt-kill';
 import Sidewinder from '../strategies/sidewinder';
 import Wilsons from '../strategies/wilsons';
 
@@ -15,14 +16,15 @@ export enum Strategy {
   AldousBroder,
   BinaryTree,
   Sidewinder,
-  Wilsons
+  Wilsons,
+  HuntKill,
 }
 
 const optionsSlice = createSlice({
   name: 'options',
   initialState: {
     size: 20,
-    strategy: Strategy.Wilsons,
+    strategy: Strategy.HuntKill,
     renderer: Renderer.SVG,
     showSolution: false,
     showDistance: false,
@@ -70,6 +72,8 @@ export const selectStrategy = (state: any): Function => {
       return Sidewinder.on;
     case Strategy.Wilsons:
       return Wilsons.on;
+    case Strategy.HuntKill:
+        return HuntKill.on;
     default:
       return AldousBroder;
   }
