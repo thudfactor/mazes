@@ -51,6 +51,24 @@ p, h1, h2, h3, h4, h5, h6 {
   isolation: isolate;
 }
 
+:root {
+  --shadow-color: 0deg 0% 63%;
+  --shadow-elevation-low:
+    0.3px 0.5px 0.8px hsl(var(--shadow-color) / 0.14),
+    0.8px 1.6px 2.4px -1.2px hsl(var(--shadow-color) / 0.31);
+  --shadow-elevation-medium:
+    0.3px 0.5px 0.8px hsl(var(--shadow-color) / 0.13),
+    1.3px 2.5px 3.7px -0.6px hsl(var(--shadow-color) / 0.24),
+    4.1px 8.1px 12.1px -1.2px hsl(var(--shadow-color) / 0.35);
+  --shadow-elevation-high:
+    0.3px 0.5px 0.8px hsl(var(--shadow-color) / 0.13),
+    1.8px 3.6px 5.3px -0.2px hsl(var(--shadow-color) / 0.17),
+    3.3px 6.7px 9.9px -0.5px hsl(var(--shadow-color) / 0.22),
+    5.7px 11.3px 16.8px -0.7px hsl(var(--shadow-color) / 0.27),
+    9.5px 18.9px 28.1px -0.9px hsl(var(--shadow-color) / 0.32),
+    15.5px 31px 46px -1.2px hsl(var(--shadow-color) / 0.37);
+}
+
 html, body {
   height: 100%;
   margin: 0;
@@ -58,6 +76,7 @@ html, body {
 }
 
 body {
+  font-family: 'quicksand', sans-serif;
   background-color: hsl(78 10% 90%);
   overscroll-behavior: none;
 }

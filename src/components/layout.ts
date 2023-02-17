@@ -35,7 +35,7 @@ export const StyledMeta = styled.div`
 
 export const StyledLayout = styled.div`
   position: absolute;
-  inset: 1rem;
+  inset: 0;
   background-color: white;
   display: grid;
   grid-template-rows: 1fr 1fr;

@@ -4,6 +4,7 @@ import { StyledControls, StyledLayout, StyledMaze } from './components/layout';
 import { Meta } from './components/meta';
 import { Navigator } from './components/navigator';
 import { Settings } from './components/settings';
+import WinState from './hooray.gif';
 import Grid from './model/grid';
 import {
   selectRenderer, selectSize, selectStrategy
@@ -41,6 +42,8 @@ export function App() {
     setAvatarPos(newMaze.start);
     setMaze(newMaze);
   }, [builder, size]);
+
+  const gameWon = maze.end.equals(avatarPos);
 
   useEffect(() => {
 
@@ -83,7 +86,8 @@ export function App() {
       <StyledControls>
         <h1>Mazes</h1>
         <p><button onClick={() => rebuild()}>Generate Maze</button></p>
-        <Settings />
+        { gameWon && <img src={WinState} alt="You Win!" /> }
+        { !gameWon && <Settings /> }
         <Navigator navigate={navigateAvatar} />
       </StyledControls>
       <Meta />

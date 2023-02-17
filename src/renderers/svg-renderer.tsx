@@ -1,8 +1,8 @@
-import Grid from "../model/grid";
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 import Cell from "..//model/cell";
 import { Avatar } from "../characters/avatar";
-import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import Grid from "../model/grid";
 import { selectShowDistance, selectShowSolution } from '../store/options-slice';
 
 
@@ -11,6 +11,7 @@ const cellSize = 10;
 const StyledSVG = styled.svg`
   width: 80%;
   height: auto;
+  box-shadow: var(--shadow-elevation-high);
 `;
 
 type SVGRendererProps = {
@@ -22,13 +23,13 @@ function renderLandmarks(maze: Grid) {
   const { start, end } = maze;
   return (
     <g className="landmarks">
-      <circle 
+      <circle
         fill="green"
         cx={(start.column * cellSize) + (cellSize / 2)}
         cy={(start.row * cellSize) + (cellSize / 2)}
         r={(cellSize / 2) - (cellSize * .1)}
       />
-      <rect 
+      <rect
         fill="red"
         x={(end.column * cellSize)}
         y={(end.row * cellSize)}
@@ -50,18 +51,18 @@ function renderDistance(maze: Grid, showDistance: boolean, showSolution: boolean
     if (!cell ) continue;
     const cellInPath = (solution && solution.includes(cell));
     if (!showDistance && !cellInPath) continue;
-    const opacity = (cellInPath && showSolution) 
-      ? 1 
+    const opacity = (cellInPath && showSolution)
+      ? 1
       : distance.at(cell) * opacityStep;
     const fill = (cellInPath && showSolution) ? "yellow" : "green";
     rectAr.push (
-      <rect 
-        key={`cell-${cell.column}-${cell.row}`} 
-        x={cell.column * cellSize} 
-        y={cell.row * cellSize} 
-        width={cellSize} 
-        height={cellSize} 
-        fill={fill} 
+      <rect
+        key={`cell-${cell.column}-${cell.row}`}
+        x={cell.column * cellSize}
+        y={cell.row * cellSize}
+        width={cellSize}
+        height={cellSize}
+        fill={fill}
         fillOpacity={opacity} />
     )
   }
@@ -81,7 +82,7 @@ function renderWalls(maze: Grid): JSX.Element {
     const { east, south } = neighbors;
     const eastBoundary = (!east || !cell.linked(east));
     const southBoundary = (!south || !cell.linked(south));
-    
+
     let thisSegment = '';
     if (eastBoundary && southBoundary) {
       thisSegment = `M${column * cellSize},${((row + 1) * cellSize)}h${cellSize}v${-cellSize}`;
