@@ -2,10 +2,7 @@ import Cell from '../model/cell';
 import Grid from '../model/grid';
 import { arraySample } from '../util/index';
 
-// Non-functioning, do not use
-export default class Wilsons {
-  // Walks through each cell of the maze step by step
-  static * step(grid:Grid) {
+export function* wilsons(grid:Grid) {
     const unvisited: Cell[] = [];
     const gridGenerator = grid.eachCell();
 
@@ -41,22 +38,7 @@ export default class Wilsons {
         path[i].link(path[i+1]);
         unvisited.splice(unvisited.indexOf(path[i]), 1);
       }
-      console.log('unvisited length', unvisited.length);
       counter++;
       yield grid;
     }
-    console.log('counter', counter);
   }
-
-  // executes all the steps at once
-  static on(grid:Grid): Grid {
-    const stepper = Wilsons.step(grid);
-    let i = 0;
-    // eslint-disable-next-line
-    for (let s of stepper) {
-      i += 1;
-    }
-    console.log(`Wilsons in ${i}`);
-    return grid;
-  }
-}

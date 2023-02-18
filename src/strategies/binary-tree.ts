@@ -1,9 +1,7 @@
 import Grid from '../model/grid';
 import { arraySample } from '../util/index';
 
-export default class BinaryTree {
-  // Walks through each cell of the maze step by step
-  static * step(grid:Grid) {
+export function* binaryTree(grid:Grid) {
     const cellGenerator = grid.eachCell();
     for (let c of cellGenerator) {
       if (!c) continue;
@@ -20,15 +18,5 @@ export default class BinaryTree {
       yield grid;
     }
   }
-  // executes all the steps at once
-  static on(grid:Grid): Grid {
-    const stepper = BinaryTree.step(grid);
-    let i = 0;
-    // eslint-disable-next-line
-    for (let s of stepper) {
-      i += 1;
-    }
-    console.log(`Binary tree in ${i}`);
-    return grid;
-  }
-}
+
+

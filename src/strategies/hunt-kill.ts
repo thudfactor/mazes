@@ -2,9 +2,7 @@ import Cell from '../model/cell';
 import Grid from '../model/grid';
 import { arraySample } from '../util/index';
 
-export default class HuntKill {
-  // Walks through each cell of the maze step by step
-  static * step(grid:Grid) {
+export function* huntKill(grid:Grid) {
     let current: Cell | null = grid.random_cell();
 
     while (current) {
@@ -39,15 +37,3 @@ export default class HuntKill {
       yield grid;
     }
   }
-  // executes all the steps at once
-  static on(grid:Grid): Grid {
-    const stepper = HuntKill.step(grid);
-    let i = 0;
-    // eslint-disable-next-line
-    for (let s of stepper) {
-      i += 1;
-    }
-    console.log(`Hunt and Kill in ${i}`);
-    return grid;
-  }
-}

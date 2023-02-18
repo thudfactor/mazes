@@ -2,15 +2,14 @@ import Cell from '../model/cell';
 import Grid from '../model/grid';
 import { arraySample, randomFrom } from '../util/index';
 
-export default class Sidewinder {
-  static * step(grid:Grid) {
+export function* sidewinder(grid:Grid) {
     const rowGenerator = grid.eachRow();
     for (let row of rowGenerator) {
       let run:Cell[] = [];
       for (let c of row) {
         run.push(c);
         const { eastBoundary, northBoundary } = grid.cellAtBoundaries(c);
-        const shouldCloseOut = eastBoundary || 
+        const shouldCloseOut = eastBoundary ||
                 (!northBoundary && randomFrom(1) === 0);
         if (shouldCloseOut) {
           const member = arraySample(run);
@@ -22,17 +21,5 @@ export default class Sidewinder {
         yield grid;
       }
     }
-  }
-
-  // executes all the steps at once
-  static on(grid:Grid): Grid {
-    const stepper = Sidewinder.step(grid);
-    let i = 0;
-    // eslint-disable-next-line
-    for (let s of stepper) {
-      i += 1;
-    }
-    console.log(`Sidewinder tree in ${i}`);
-    return grid;
-  }
 }
+

@@ -1,5 +1,5 @@
-import Cell from './cell';
 import { arrayOf, randomFrom } from '../util/index';
+import Cell from './cell';
 
 export default class Grid {
   rows: number;
@@ -10,7 +10,6 @@ export default class Grid {
   solution: Cell[] | false;
 
   constructor(rows: number, columns: number, randomizeGoals: boolean = false) {
-    //console.log('grid constructor called');
     this.rows = rows;
     this.columns = columns;
     this.grid = this.prepareGrid();
@@ -22,9 +21,9 @@ export default class Grid {
     if (randomizeGoals) {
       const startCol = (randomFrom(1) === 0) ? 0 : this.columns - 1;
       const endCol = (startCol === 0) ? this.columns - 1 : 0;
-  
+
       this.start = this.grid[randomFrom(this.rows - 1)][startCol];
-      this.end = this.grid[randomFrom(this.rows - 1)][endCol];  
+      this.end = this.grid[randomFrom(this.rows - 1)][endCol];
     } else {
       this.start = this.grid[rows - 1][0];
       this.end = this.grid[0][columns - 1];
@@ -138,6 +137,17 @@ export default class Grid {
     return this.solution;
   }
 
+  deadEnds(): number {
+    let count = 0;
+    const cellGenerator = this.eachCell();
+    for (let cell of cellGenerator) {
+      if (cell?.links.length === 1) {
+        count++;
+      }
+    }
+    return count;
+  }
+
   // Default renderer; useful if running in a node context
   toString() {
     let output = `+${"---+".repeat(this.columns)}\n`;
@@ -145,9 +155,9 @@ export default class Grid {
     for (let row of rowGen) {
       let top = "|";
       let bottom = "+";
-      
+
       row.forEach(cell => {
-        const isStart = cell.equals(this.start); 
+        const isStart = cell.equals(this.start);
         const isEnd = cell.equals(this.end);
         const { eastBoundary, southBoundary } = this.cellAtBoundaries(cell);
         let marker = ' ';

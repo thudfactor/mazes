@@ -2,16 +2,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ASCIIRenderer } from '../renderers/ascii-renderer';
 import { SVGRenderer } from '../renderers/svg-renderer';
 import {
-  Renderer, selectRenderer, selectShowDistance,
+  MazeStrategy, Renderer, selectRenderer, selectShowDistance,
   selectShowSolution,
-  selectSize, selectStrategy, setRenderer, setSize, setStrategy, Strategy, toggleShowDistance,
+  selectSize, selectStrategy, setRenderer, setSize, setStrategy, toggleShowDistance,
   toggleShowSolution
 } from '../store/options-slice';
-import AldousBroder from '../strategies/aldous-broder';
-import BinaryTree from '../strategies/binary-tree';
-import HuntKill from '../strategies/hunt-kill';
-import Sidewinder from '../strategies/sidewinder';
-import Wilsons from '../strategies/wilsons';
+import * as Mazes from '../strategies';
 
 export const Settings = () => {
   const dispatch = useDispatch();
@@ -60,32 +56,32 @@ export const Settings = () => {
       <legend>Build Strategy</legend>
       <p>Changing this will reset the maze.</p>
       <label><input
-        onChange={() => dispatch(setStrategy(Strategy.HuntKill))}
-        checked={builder === HuntKill.on}
+        onChange={() => dispatch(setStrategy(MazeStrategy.huntKill))}
+        checked={builder === Mazes.huntKill}
         type="radio"
         name="builder"
         value="huntkill" /> Hunt and Kill</label><br/>
       <label><input
-        onChange={() => dispatch(setStrategy(Strategy.Wilsons))}
-        checked={builder === Wilsons.on}
+        onChange={() => dispatch(setStrategy(MazeStrategy.wilsons))}
+        checked={builder === Mazes.wilsons}
         type="radio"
         name="builder"
         value="wilsons" /> Wilsons</label><br/>
       <label><input
-        onChange={() => dispatch(setStrategy(Strategy.AldousBroder))}
-        checked={builder === AldousBroder.on}
+        onChange={() => dispatch(setStrategy(MazeStrategy.aldousBroder))}
+        checked={builder === Mazes.aldousBroder}
         type="radio"
         name="builder"
         value="aldous" /> Aldous-Broder</label><br/>
       <label><input
-        onChange={() => dispatch(setStrategy(Strategy.Sidewinder))}
-        checked={builder === Sidewinder.on}
+        onChange={() => dispatch(setStrategy(MazeStrategy.sidewinder))}
+        checked={builder === Mazes.sidewinder}
         type="radio"
         name="builder"
         value="sidewinder" /> Sidewinder</label><br/>
       <label><input
-        onChange={() => dispatch(setStrategy(Strategy.BinaryTree))}
-        checked={builder === BinaryTree.on}
+        onChange={() => dispatch(setStrategy(MazeStrategy.binaryTree))}
+        checked={builder === Mazes.binaryTree}
         type="radio"
         name="builder"
         value="binarytree" /> Binary Tree</label>

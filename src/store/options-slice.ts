@@ -1,30 +1,40 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { RootState } from '.';
 import { ASCIIRenderer } from '../renderers/ascii-renderer';
 import { SVGRenderer } from '../renderers/svg-renderer';
-import AldousBroder from '../strategies/aldous-broder';
-import BinaryTree from '../strategies/binary-tree';
-import HuntKill from '../strategies/hunt-kill';
-import Sidewinder from '../strategies/sidewinder';
-import Wilsons from '../strategies/wilsons';
+import * as Mazes from "../strategies";
 
 export enum Renderer {
-  ASCII,
-  SVG
+  ASCII = 'ascii',
+  SVG = 'svg'
 }
 
-export enum Strategy {
-  AldousBroder,
-  BinaryTree,
-  Sidewinder,
-  Wilsons,
-  HuntKill,
+export enum MazeStrategy {
+  aldousBroder = 'aldousBroder',
+  binaryTree = 'binaryTree',
+  huntKill = 'huntKill',
+  sidewinder = 'sidewinder',
+  wilsons = 'wilsons'
+}
+
+const mazeMatcher = {
+  aldousBroder: Mazes.aldousBroder,
+  binaryTree: Mazes.binaryTree,
+  huntKill: Mazes.huntKill,
+  sidewinder: Mazes.sidewinder,
+  wilsons: Mazes.wilsons
+}
+
+const rendererMatcher = {
+  ascii: ASCIIRenderer,
+  svg: SVGRenderer
 }
 
 const optionsSlice = createSlice({
   name: 'options',
   initialState: {
     size: 20,
-    strategy: Strategy.HuntKill,
+    strategy: MazeStrategy.huntKill,
     renderer: Renderer.SVG,
     showSolution: false,
     showDistance: false,
@@ -36,13 +46,13 @@ const optionsSlice = createSlice({
     toggleShowDistance(state) {
       state.showDistance = !state.showDistance;
     },
-    setSize(state, action) {
+    setSize(state, action: {type: string, payload: number}) {
       state.size = action.payload;
     },
-    setRenderer(state, action ) {
+    setRenderer(state, action: {type: string, payload: Renderer} ) {
       state.renderer = action.payload;
     },
-    setStrategy(state, action) {
+    setStrategy(state, action: {type: string, payload: MazeStrategy}) {
       state.strategy = action.payload;
     }
   }
@@ -56,38 +66,10 @@ export const {
   setStrategy
 } = optionsSlice.actions;
 
-export const selectSize = (state: any): number => state.options.size;
-
-export const selectShowDistance = (state: any): boolean => state.options.showDistance;
-
-export const selectShowSolution = (state: any): boolean => state.options.showSolution;
-
-export const selectStrategy = (state: any): Function => {
-  switch (state.options.strategy) {
-    case Strategy.AldousBroder:
-      return AldousBroder.on;
-    case Strategy.BinaryTree:
-      return BinaryTree.on;
-    case Strategy.Sidewinder:
-      return Sidewinder.on;
-    case Strategy.Wilsons:
-      return Wilsons.on;
-    case Strategy.HuntKill:
-        return HuntKill.on;
-    default:
-      return AldousBroder;
-  }
-}
-
-export const selectRenderer = (state: any): Function => {
-  switch (state.options.renderer) {
-    case Renderer.ASCII:
-      return ASCIIRenderer;
-    case Renderer.SVG:
-      return SVGRenderer;
-    default:
-      return ASCIIRenderer;
-  }
-}
+export const selectSize = (state: RootState): number => state.options.size;
+export const selectShowDistance = (state: RootState): boolean => state.options.showDistance;
+export const selectShowSolution = (state: RootState): boolean => state.options.showSolution;
+export const selectStrategy = (state: RootState): Mazes.MazeFunction => mazeMatcher[state.options.strategy];
+export const selectRenderer = (state: RootState): Function => rendererMatcher[state.options.renderer];
 
 export default optionsSlice.reducer;

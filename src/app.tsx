@@ -9,9 +9,10 @@ import Grid from './model/grid';
 import {
   selectRenderer, selectSize, selectStrategy
 } from './store/options-slice';
+import { createMaze, MazeFunction } from './strategies';
 
-function generateMaze(builder: any, rows: number, columns: number): Grid {
-  return builder(new Grid(rows,columns)).longestPath();
+function generateMaze(builder: MazeFunction, rows: number, columns: number): Grid {
+  return createMaze(new Grid(rows, columns), { strategy: builder }).longestPath();
 }
 
 export function App() {
