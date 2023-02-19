@@ -11,7 +11,7 @@ interface MazeOptions {
   strategy: MazeFunction;
 }
 
-export function createMaze(grid: Grid, { strategy }:MazeOptions):Grid {
+export function createMaze(grid: Grid, { strategy }: MazeOptions): Grid {
   const stepper = strategy(grid);
   let i = 0;
   // eslint-disable-next-line

@@ -4,22 +4,24 @@ const Wrapper = styled.div`
   button {
     display: inline-block;
     font-size: 2rem;
-    margin: .5rem;
-  }  
+    margin: 0.5rem;
+  }
 `;
 
 type NavigatorProps = {
-  navigate: Function
-}
+  navigate: Function;
+};
 
-export const Navigator = ({ navigate }:NavigatorProps) => {
+export const Navigator = ({ navigate }: NavigatorProps) => {
   return (
     <Wrapper>
       <legend>Navigate</legend>
       <p>Or use WASD keys to move</p>
-      <button onClick={() => navigate('north')}>↑</button><br />
-      <button onClick={() => navigate('west')}>←</button> <button onClick={() => navigate('east')}>→</button><br />
-      <button onClick={() => navigate('south')}>↓</button>
+      <button onClick={() => navigate("north")}>↑</button>
+      <br />
+      <button onClick={() => navigate("west")}>←</button> <button onClick={() => navigate("east")}>→</button>
+      <br />
+      <button onClick={() => navigate("south")}>↓</button>
     </Wrapper>
   );
-}
+};

@@ -1,5 +1,5 @@
-import { arrayOf, randomFrom } from '../util/index';
-import Cell from './cell';
+import { arrayOf, randomFrom } from "../util/index";
+import Cell from "./cell";
 
 export default class Grid {
   rows: number;
@@ -19,8 +19,8 @@ export default class Grid {
     this.getCellAt.bind(this);
 
     if (randomizeGoals) {
-      const startCol = (randomFrom(1) === 0) ? 0 : this.columns - 1;
-      const endCol = (startCol === 0) ? this.columns - 1 : 0;
+      const startCol = randomFrom(1) === 0 ? 0 : this.columns - 1;
+      const endCol = startCol === 0 ? this.columns - 1 : 0;
 
       this.start = this.grid[randomFrom(this.rows - 1)][startCol];
       this.end = this.grid[randomFrom(this.rows - 1)][endCol];
@@ -43,9 +43,9 @@ export default class Grid {
     const allCells = this.eachCell();
     for (let c of allCells) {
       if (!c) continue;
-      const {row, column: col} = c;
-      c.north = this.getCellAt(row - 1,col);
-      c.south = this.getCellAt(row + 1,col);
+      const { row, column: col } = c;
+      c.north = this.getCellAt(row - 1, col);
+      c.south = this.getCellAt(row + 1, col);
       c.west = this.getCellAt(row, col - 1);
       c.east = this.getCellAt(row, col + 1);
     }
@@ -70,16 +70,16 @@ export default class Grid {
     return this.rows * this.columns;
   }
 
-  * eachRow() {
-    for(let i = 0; i < this.rows; i++) {
+  *eachRow() {
+    for (let i = 0; i < this.rows; i++) {
       yield this.grid[i];
     }
   }
 
-  * eachCell() {
-    for(let i = 0; i < this.rows; i++) {
-      for(let j = 0; j < this.columns; j++) {
-        yield this.getCellAt(i,j);
+  *eachCell() {
+    for (let i = 0; i < this.rows; i++) {
+      for (let j = 0; j < this.columns; j++) {
+        yield this.getCellAt(i, j);
       }
     }
   }
@@ -89,8 +89,8 @@ export default class Grid {
       northBoundary: !c.north,
       southBoundary: !c.south,
       eastBoundary: !c.east,
-      westBoundary: !c.west
-    }
+      westBoundary: !c.west,
+    };
   }
 
   pathFrom(start: Cell, goal: Cell): Cell[] | false {
@@ -100,7 +100,7 @@ export default class Grid {
     while (!current.equals(start)) {
       let maybe;
       if (current.links.length === 0) {
-        console.warn('no solution');
+        console.warn("no solution");
         return false;
       }
       for (let j = 0; j < current.links.length; j++) {
@@ -131,7 +131,7 @@ export default class Grid {
   }
 
   solve(): Cell[] | false {
-    if(!this.solution) {
+    if (!this.solution) {
       this.solution = this.pathFrom(this.start, this.end);
     }
     return this.solution;
@@ -156,18 +156,18 @@ export default class Grid {
       let top = "|";
       let bottom = "+";
 
-      row.forEach(cell => {
+      row.forEach((cell) => {
         const isStart = cell.equals(this.start);
         const isEnd = cell.equals(this.end);
         const { eastBoundary, southBoundary } = this.cellAtBoundaries(cell);
-        let marker = ' ';
-        if (isStart) marker = '✬';
-        if (isEnd) marker = '⦿';
+        let marker = " ";
+        if (isStart) marker = "✬";
+        if (isEnd) marker = "⦿";
         const body = ` ${marker} `;
-        const east_boundary = eastBoundary ? '|' : ' ';
+        const east_boundary = eastBoundary ? "|" : " ";
         top += body + east_boundary;
-        const south_boundary = southBoundary ? '---' : '   ';
-        bottom += south_boundary + '+';
+        const south_boundary = southBoundary ? "---" : "   ";
+        bottom += south_boundary + "+";
       });
 
       output += `${top}\n${bottom}\n`;

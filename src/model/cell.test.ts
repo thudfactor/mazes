@@ -1,8 +1,8 @@
 import Cell from "./cell";
 
-describe('cell tests', ()=> {
-  test('properly initializes a cell', () => {
-    const cell = new Cell(0,0);
+describe("cell tests", () => {
+  test("properly initializes a cell", () => {
+    const cell = new Cell(0, 0);
     expect(cell.row).toBe(0);
     expect(cell.column).toBe(0);
     expect(cell.links.length).toBe(0);
@@ -12,12 +12,12 @@ describe('cell tests', ()=> {
     expect(cell.west).toBeNull();
   });
 
-  test('can set neighbors', () => {
-    const cell = new Cell(1,1)
-    const n = new Cell(1,0);
-    const s = new Cell(1,2);
-    const e = new Cell(2,1);
-    const w = new Cell(0,1);
+  test("can set neighbors", () => {
+    const cell = new Cell(1, 1);
+    const n = new Cell(1, 0);
+    const s = new Cell(1, 2);
+    const e = new Cell(2, 1);
+    const w = new Cell(0, 1);
     cell.north = n;
     cell.south = s;
     cell.east = e;
@@ -32,41 +32,41 @@ describe('cell tests', ()=> {
     expect(cell.neighbors.west).toBe(w);
   });
 
-  test('correctly matches two cells with the same coordinates', () => {
-    const cellA = new Cell(0,0);
-    const cellB = new Cell(0,0);
+  test("correctly matches two cells with the same coordinates", () => {
+    const cellA = new Cell(0, 0);
+    const cellB = new Cell(0, 0);
     expect(cellA.equals(cellB)).toBe(true);
   });
 
-  test('does not match cells with different coordinates', () => {
-    const cellA = new Cell(0,0);
-    const cellB = new Cell(0,1);
-    const cellC = new Cell(1,0);
-    const cellD = new Cell(1,1);
+  test("does not match cells with different coordinates", () => {
+    const cellA = new Cell(0, 0);
+    const cellB = new Cell(0, 1);
+    const cellC = new Cell(1, 0);
+    const cellD = new Cell(1, 1);
     expect(cellA.equals(cellB)).toBe(false);
     expect(cellA.equals(cellC)).toBe(false);
     expect(cellA.equals(cellD)).toBe(false);
   });
-  
-  test('links two cells to each other', () => {
-    const cellA = new Cell(0,0);
-    const cellB = new Cell(0,1);
+
+  test("links two cells to each other", () => {
+    const cellA = new Cell(0, 0);
+    const cellB = new Cell(0, 1);
     cellA.link(cellB);
     expect(cellA.linked(cellB)).toBe(true);
     expect(cellB.linked(cellA)).toBe(true);
   });
 
-  test('makes a one-directional link', () => {
-    const cellA = new Cell(0,0);
-    const cellB = new Cell(0,1);
+  test("makes a one-directional link", () => {
+    const cellA = new Cell(0, 0);
+    const cellB = new Cell(0, 1);
     cellA.link(cellB, false);
     expect(cellA.linked(cellB)).toBe(true);
     expect(cellB.linked(cellA)).toBe(false);
   });
 
-  test('unlinks two cells', () => {
-    const cellA = new Cell(0,0);
-    const cellB = new Cell(0,1);
+  test("unlinks two cells", () => {
+    const cellA = new Cell(0, 0);
+    const cellB = new Cell(0, 1);
     cellA.link(cellB);
     expect(cellA.linked(cellB)).toBe(true);
     expect(cellB.linked(cellA)).toBe(true);
@@ -75,9 +75,9 @@ describe('cell tests', ()=> {
     expect(cellB.linked(cellA)).toBe(false);
   });
 
-  test('turns a bidirectional link into a one-way link', () => {
-    const cellA = new Cell(0,0);
-    const cellB = new Cell(0,1);
+  test("turns a bidirectional link into a one-way link", () => {
+    const cellA = new Cell(0, 0);
+    const cellB = new Cell(0, 1);
     cellA.link(cellB);
     expect(cellA.linked(cellB)).toBe(true);
     expect(cellB.linked(cellA)).toBe(true);
@@ -86,9 +86,9 @@ describe('cell tests', ()=> {
     expect(cellB.linked(cellA)).toBe(true);
   });
 
-  test('cannot link the same cell over and over', () => {
-    const cellA = new Cell(0,0);
-    const cellB = new Cell(0,1);
+  test("cannot link the same cell over and over", () => {
+    const cellA = new Cell(0, 0);
+    const cellB = new Cell(0, 1);
     cellA.link(cellB);
     cellA.link(cellB);
     cellA.link(cellB);
@@ -98,11 +98,11 @@ describe('cell tests', ()=> {
     expect(cellB.links.length).toBe(1);
   });
 
-  test('calculates distances', () => {
-    const cellA = new Cell(0,0);
-    const cellB = new Cell(0,1);
-    const cellC = new Cell(0,2);
-    const cellD = new Cell(1,0);
+  test("calculates distances", () => {
+    const cellA = new Cell(0, 0);
+    const cellB = new Cell(0, 1);
+    const cellC = new Cell(0, 2);
+    const cellD = new Cell(1, 0);
     cellA.link(cellB);
     cellB.link(cellC);
     cellA.link(cellD);
@@ -113,11 +113,11 @@ describe('cell tests', ()=> {
     expect(d.at(cellD)).toBe(1);
   });
 
-  test('caches distances', () => {
-    const cellA = new Cell(0,0);
-    const cellB = new Cell(0,1);
-    const cellC = new Cell(0,2);
-    const cellD = new Cell(1,0);
+  test("caches distances", () => {
+    const cellA = new Cell(0, 0);
+    const cellB = new Cell(0, 1);
+    const cellC = new Cell(0, 2);
+    const cellD = new Cell(1, 0);
     cellA.link(cellB);
     cellB.link(cellC);
     cellA.link(cellD);
@@ -126,11 +126,11 @@ describe('cell tests', ()=> {
     expect(d).toBe(e);
   });
 
-  test('invalidates distance cache on request', () => {
-    const cellA = new Cell(0,0);
-    const cellB = new Cell(0,1);
-    const cellC = new Cell(0,2);
-    const cellD = new Cell(1,0);
+  test("invalidates distance cache on request", () => {
+    const cellA = new Cell(0, 0);
+    const cellB = new Cell(0, 1);
+    const cellC = new Cell(0, 2);
+    const cellD = new Cell(1, 0);
     cellA.link(cellB);
     cellB.link(cellC);
     cellA.link(cellD);

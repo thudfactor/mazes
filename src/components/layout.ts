@@ -24,7 +24,7 @@ export const StyledControls = styled.div`
   fieldset {
     text-align: left;
   }
-`
+`;
 
 export const StyledMeta = styled.div`
   padding: 1rem;
@@ -55,6 +55,4 @@ export const StyledLayout = styled.div`
     grid-column: 3/4;
     grid-row: 2/3;
   }
-`
-
-
+`;

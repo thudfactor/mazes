@@ -1,7 +1,7 @@
-import Grid from '../model/grid';
-import { arraySample } from '../util/index';
+import Grid from "../model/grid";
+import { arraySample } from "../util/index";
 
-export function* aldousBroder(grid:Grid) {
+export function* aldousBroder(grid: Grid) {
   let cell = grid.random_cell();
   let unvisited = grid.size - 1;
 
@@ -17,4 +17,3 @@ export function* aldousBroder(grid:Grid) {
     }
   }
 }
-

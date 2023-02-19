@@ -1,9 +1,9 @@
-import styled, { CSSProperties } from 'styled-components';
+import styled, { CSSProperties } from "styled-components";
 import Cell from "../model/cell";
 import Grid from "../model/grid";
-import Distances from '../model/distances';
-import { useSelector } from 'react-redux';
-import { selectShowDistance } from '../store/options-slice';
+import Distances from "../model/distances";
+import { useSelector } from "react-redux";
+import { selectShowDistance } from "../store/options-slice";
 
 const StyledRenderer = styled.div`
   width: max-content;
@@ -11,7 +11,7 @@ const StyledRenderer = styled.div`
   font-family: monospace;
   white-space: pre;
   line-height: 1;
-  letter-spacing: -.05em;
+  letter-spacing: -0.05em;
   background-color: white;
   font-size: 0.625em;
 `;
@@ -19,25 +19,25 @@ const StyledRenderer = styled.div`
 type AsciiRendererProps = {
   maze: Grid;
   avatar?: Cell;
-}
+};
 
-export function ASCIIRenderer({ maze, avatar }:AsciiRendererProps) {
+export function ASCIIRenderer({ maze, avatar }: AsciiRendererProps) {
   const showDistance = useSelector(selectShowDistance);
 
   let distances: Distances | null = null;
-  if(maze.start) {
+  if (maze.start) {
     distances = maze.start.distances();
   }
 
-  function contentOf(cell: Cell):string {
-    if (cell.equals(maze.start)) return '✬';
-    if (cell.equals(maze.end)) return '⦿';
-    if (avatar && cell.equals(avatar)) return '@';
+  function contentOf(cell: Cell): string {
+    if (cell.equals(maze.start)) return "✬";
+    if (cell.equals(maze.end)) return "⦿";
+    if (avatar && cell.equals(avatar)) return "@";
     const thisDistance = distances?.at(cell);
     if (showDistance && thisDistance) {
-      return `${(thisDistance < 36) ? thisDistance.toString(36) : ' '}`;
+      return `${thisDistance < 36 ? thisDistance.toString(36) : " "}`;
     }
-    return ' ';
+    return " ";
   }
 
   function renderMaze() {
@@ -46,17 +46,16 @@ export function ASCIIRenderer({ maze, avatar }:AsciiRendererProps) {
     for (let row of rowGen) {
       let top = "|";
       let bottom = "+";
-      
-      row.forEach(cell => {
+
+      row.forEach((cell) => {
         const { east, south } = cell.neighbors;
         let marker = contentOf(cell);
 
-
         const body = ` ${marker} `;
-        const east_boundary = (east && cell.linked(east)) ? ' ' : '|';
+        const east_boundary = east && cell.linked(east) ? " " : "|";
         top += body + east_boundary;
-        const south_boundary = (south && cell.linked(south)) ? '   ' : '---';
-        bottom += south_boundary + '+';
+        const south_boundary = south && cell.linked(south) ? "   " : "---";
+        bottom += south_boundary + "+";
       });
 
       output += `${top}\n${bottom}\n`;
@@ -65,14 +64,14 @@ export function ASCIIRenderer({ maze, avatar }:AsciiRendererProps) {
   }
 
   const customProperties = {
-    '--rows': maze.rows,
-    '--columns': maze.columns
+    "--rows": maze.rows,
+    "--columns": maze.columns,
   } as CSSProperties;
 
   return (
     <>
       <p>Start at ✬ and proceed towards ⦿</p>
-      <StyledRenderer style={customProperties} >{ renderMaze() }</StyledRenderer>
+      <StyledRenderer style={customProperties}>{renderMaze()}</StyledRenderer>
     </>
   );
 }

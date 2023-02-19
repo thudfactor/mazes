@@ -1,16 +1,16 @@
-export const arrayOf = (val: number):number[] => {
+export const arrayOf = (val: number): number[] => {
   return [...Array(val).keys()];
-}
+};
 
-export const arraySample = (array:any[]):any => {
+export const arraySample = (array: any[]): any => {
   const index = randomFrom(array.length - 1);
   return array[index];
-}
+};
 
-export const randomFrom = (max:number):number => {
+export const randomFrom = (max: number): number => {
   const result = Math.floor(Math.random() * (max + 1));
   return result;
-}
+};
 
 // const maxWeight = 100;
 
@@ -20,7 +20,7 @@ export const randomFrom = (max:number):number => {
 //   let cumulativeWeights = [1,2];
 
 //   let lastIter: number = null;
-  
+
 //   while(true) {
 //     let collector = 0;
 //     const randomChoice = randomFrom(cumulativeWeights[1]) + 1;
@@ -36,7 +36,7 @@ export const randomFrom = (max:number):number => {
 //       if(lastIter !== null) weights[lastIter] = 1;
 //       console.log('different', thisIter, weights);
 //     }
-  
+
 //     lastIter = thisIter;
 //     cumulativeWeights = weights.map(v => {
 //       let nextv = collector + v;

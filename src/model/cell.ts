@@ -2,7 +2,7 @@ import Distances from "./distances";
 
 type Neighbors = {
   [key: string]: Cell | null;
-}
+};
 
 export default class Cell {
   row: number;
@@ -23,7 +23,7 @@ export default class Cell {
   }
 
   // Checks for equality with a cell by comparing the cells address
-  equals(cell: Cell):boolean {
+  equals(cell: Cell): boolean {
     return this.row === cell.row && this.column === cell.column;
   }
 
@@ -36,25 +36,25 @@ export default class Cell {
   }
 
   unlink(cell: Cell, bidi = true) {
-    const newLinks = this.links.filter((current) => (!cell.equals(current)));
+    const newLinks = this.links.filter((current) => !cell.equals(current));
     this.links = newLinks;
     bidi && cell.unlink(this, false);
   }
 
   linked(cell: Cell) {
     const found = this.links.find((current) => {
-      return (current.equals(cell));
+      return current.equals(cell);
     });
-    return (found instanceof Cell);
+    return found instanceof Cell;
   }
 
-  get neighbors():Neighbors {
+  get neighbors(): Neighbors {
     return {
-      'north': this.north,
-      'south': this.south,
-      'east': this.east,
-      'west': this.west
-    }
+      north: this.north,
+      south: this.south,
+      east: this.east,
+      west: this.west,
+    };
   }
 
   private _clearDistances() {
@@ -66,12 +66,12 @@ export default class Cell {
   // changes.
   distances(recalc = false): Distances {
     if (this._distanceCache && !recalc) return this._distanceCache;
-    
+
     const distances = new Distances(this);
     let frontier = [this as Cell];
 
     while (frontier.length !== 0) {
-      const new_frontier:Cell[] = [];
+      const new_frontier: Cell[] = [];
       frontier.forEach((cell) => {
         const currentDistance = distances.at(cell);
         cell.links.forEach((linked) => {
@@ -87,4 +87,3 @@ export default class Cell {
     return distances;
   }
 }
-

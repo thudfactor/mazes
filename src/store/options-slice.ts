@@ -1,20 +1,20 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from '.';
-import { ASCIIRenderer } from '../renderers/ascii-renderer';
-import { SVGRenderer } from '../renderers/svg-renderer';
+import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from ".";
+import { ASCIIRenderer } from "../renderers/ascii-renderer";
+import { SVGRenderer } from "../renderers/svg-renderer";
 import * as Mazes from "../strategies";
 
 export enum Renderer {
-  ASCII = 'ascii',
-  SVG = 'svg'
+  ASCII = "ascii",
+  SVG = "svg",
 }
 
 export enum MazeStrategy {
-  aldousBroder = 'aldousBroder',
-  binaryTree = 'binaryTree',
-  huntKill = 'huntKill',
-  sidewinder = 'sidewinder',
-  wilsons = 'wilsons'
+  aldousBroder = "aldousBroder",
+  binaryTree = "binaryTree",
+  huntKill = "huntKill",
+  sidewinder = "sidewinder",
+  wilsons = "wilsons",
 }
 
 const mazeMatcher = {
@@ -22,16 +22,16 @@ const mazeMatcher = {
   binaryTree: Mazes.binaryTree,
   huntKill: Mazes.huntKill,
   sidewinder: Mazes.sidewinder,
-  wilsons: Mazes.wilsons
-}
+  wilsons: Mazes.wilsons,
+};
 
 const rendererMatcher = {
   ascii: ASCIIRenderer,
-  svg: SVGRenderer
-}
+  svg: SVGRenderer,
+};
 
 const optionsSlice = createSlice({
-  name: 'options',
+  name: "options",
   initialState: {
     size: 20,
     strategy: MazeStrategy.huntKill,
@@ -46,25 +46,19 @@ const optionsSlice = createSlice({
     toggleShowDistance(state) {
       state.showDistance = !state.showDistance;
     },
-    setSize(state, action: {type: string, payload: number}) {
+    setSize(state, action: { type: string; payload: number }) {
       state.size = action.payload;
     },
-    setRenderer(state, action: {type: string, payload: Renderer} ) {
+    setRenderer(state, action: { type: string; payload: Renderer }) {
       state.renderer = action.payload;
     },
-    setStrategy(state, action: {type: string, payload: MazeStrategy}) {
+    setStrategy(state, action: { type: string; payload: MazeStrategy }) {
       state.strategy = action.payload;
-    }
-  }
+    },
+  },
 });
 
-export const {
-  toggleShowSolution,
-  toggleShowDistance,
-  setSize,
-  setRenderer,
-  setStrategy
-} = optionsSlice.actions;
+export const { toggleShowSolution, toggleShowDistance, setSize, setRenderer, setStrategy } = optionsSlice.actions;
 
 export const selectSize = (state: RootState): number => state.options.size;
 export const selectShowDistance = (state: RootState): boolean => state.options.showDistance;
