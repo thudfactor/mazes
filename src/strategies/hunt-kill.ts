@@ -11,7 +11,7 @@ export function* huntKill(grid: Grid) {
     });
 
     if (unvisitedNeighbors.length > 0) {
-      let chosen = arraySample(unvisitedNeighbors) as Cell;
+      const chosen = arraySample(unvisitedNeighbors) as Cell;
       current.link(chosen);
       current = chosen;
     } else {
@@ -19,17 +19,20 @@ export function* huntKill(grid: Grid) {
 
       const cellGenerator = grid.eachCell();
 
-      for (let c of cellGenerator) {
+      for (const c of cellGenerator) {
         if (!c) continue;
 
         const visitedNeighbors = Object.values(c.neighbors).filter((neighbor) => {
+          if (neighbor === null) return false;
           return neighbor && neighbor?.links.length > 0;
         });
 
         if (c.links.length === 0 && visitedNeighbors.length > 0) {
           current = c;
-          let chosen = arraySample(visitedNeighbors);
-          current.link(chosen);
+          const chosen = arraySample(visitedNeighbors);
+          // We have filtered non-null values from the neighbors array above
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          current.link(chosen!);
           break;
         }
       }

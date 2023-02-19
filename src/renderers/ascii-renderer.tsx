@@ -1,8 +1,8 @@
-import styled, { CSSProperties } from "styled-components";
-import Cell from "../model/cell";
-import Grid from "../model/grid";
-import Distances from "../model/distances";
 import { useSelector } from "react-redux";
+import styled, { CSSProperties } from "styled-components";
+import type { RendererProps } from ".";
+import Cell from "../model/cell";
+import Distances from "../model/distances";
 import { selectShowDistance } from "../store/options-slice";
 
 const StyledRenderer = styled.div`
@@ -16,12 +16,7 @@ const StyledRenderer = styled.div`
   font-size: 0.625em;
 `;
 
-type AsciiRendererProps = {
-  maze: Grid;
-  avatar?: Cell;
-};
-
-export function ASCIIRenderer({ maze, avatar }: AsciiRendererProps) {
+export function ASCIIRenderer({ maze, avatar }: RendererProps) {
   const showDistance = useSelector(selectShowDistance);
 
   let distances: Distances | null = null;
@@ -43,13 +38,13 @@ export function ASCIIRenderer({ maze, avatar }: AsciiRendererProps) {
   function renderMaze() {
     let output = `+${"---+".repeat(maze.columns)}\n`;
     const rowGen = maze.eachRow();
-    for (let row of rowGen) {
+    for (const row of rowGen) {
       let top = "|";
       let bottom = "+";
 
       row.forEach((cell) => {
         const { east, south } = cell.neighbors;
-        let marker = contentOf(cell);
+        const marker = contentOf(cell);
 
         const body = ` ${marker} `;
         const east_boundary = east && cell.linked(east) ? " " : "|";

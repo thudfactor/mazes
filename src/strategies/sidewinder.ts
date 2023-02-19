@@ -4,9 +4,9 @@ import { arraySample, randomFrom } from "../util/index";
 
 export function* sidewinder(grid: Grid) {
   const rowGenerator = grid.eachRow();
-  for (let row of rowGenerator) {
+  for (const row of rowGenerator) {
     let run: Cell[] = [];
-    for (let c of row) {
+    for (const c of row) {
       run.push(c);
       const { eastBoundary, northBoundary } = grid.cellAtBoundaries(c);
       const shouldCloseOut = eastBoundary || (!northBoundary && randomFrom(1) === 0);

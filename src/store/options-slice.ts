@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from ".";
+import { RendererFunc } from "../renderers";
 import { ASCIIRenderer } from "../renderers/ascii-renderer";
 import { SVGRenderer } from "../renderers/svg-renderer";
 import * as Mazes from "../strategies";
@@ -64,6 +65,6 @@ export const selectSize = (state: RootState): number => state.options.size;
 export const selectShowDistance = (state: RootState): boolean => state.options.showDistance;
 export const selectShowSolution = (state: RootState): boolean => state.options.showSolution;
 export const selectStrategy = (state: RootState): Mazes.MazeFunction => mazeMatcher[state.options.strategy];
-export const selectRenderer = (state: RootState): Function => rendererMatcher[state.options.renderer];
+export const selectRenderer = (state: RootState): RendererFunc => rendererMatcher[state.options.renderer];
 
 export default optionsSlice.reducer;

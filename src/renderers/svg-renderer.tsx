@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import Cell from "..//model/cell";
+import { RendererProps } from ".";
 import { Avatar } from "../characters/avatar";
 import Grid from "../model/grid";
 import { selectShowDistance, selectShowSolution } from "../store/options-slice";
@@ -12,11 +12,6 @@ const StyledSVG = styled.svg`
   height: auto;
   box-shadow: var(--shadow-elevation-high);
 `;
-
-type SVGRendererProps = {
-  maze: Grid;
-  avatar?: Cell;
-};
 
 function renderLandmarks(maze: Grid) {
   const { start, end } = maze;
@@ -46,7 +41,7 @@ function renderDistance(maze: Grid, showDistance: boolean, showSolution: boolean
   const opacityStep = 1 / distance.max.distance;
   const cellsList = maze.eachCell();
   const rectAr: JSX.Element[] = [];
-  for (let cell of cellsList) {
+  for (const cell of cellsList) {
     if (!cell) continue;
     const cellInPath = solution && solution.includes(cell);
     if (!showDistance && !cellInPath) continue;
@@ -69,8 +64,8 @@ function renderDistance(maze: Grid, showDistance: boolean, showSolution: boolean
 
 function renderWalls(maze: Grid): JSX.Element {
   const cellsList = maze.eachCell();
-  let pathdata: string[] = [];
-  for (let cell of cellsList) {
+  const pathdata: string[] = [];
+  for (const cell of cellsList) {
     if (!cell) continue;
     const { row, column, neighbors } = cell;
     const { east, south } = neighbors;
@@ -102,7 +97,7 @@ function renderWalls(maze: Grid): JSX.Element {
   );
 }
 
-export function SVGRenderer({ maze, avatar }: SVGRendererProps) {
+export function SVGRenderer({ maze, avatar }: RendererProps) {
   const { rows, columns } = maze;
   const showDistance = useSelector(selectShowDistance);
   const showSolution = useSelector(selectShowSolution);

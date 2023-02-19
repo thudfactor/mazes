@@ -21,8 +21,8 @@ describe("arraySample", () => {
 
 describe("randomMax", () => {
   it("returns a random number between 0 and the max value, incluive of max", () => {
-    let s: number = 2;
-    let l: number = 2;
+    let s = 2;
+    let l = 2;
     for (let i = 0; i < 2000; i++) {
       const r = randomFrom(5);
       if (r < s) s = r;

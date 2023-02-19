@@ -9,7 +9,7 @@ export default class Grid {
   grid: Cell[][];
   solution: Cell[] | false;
 
-  constructor(rows: number, columns: number, randomizeGoals: boolean = false) {
+  constructor(rows: number, columns: number, randomizeGoals = false) {
     this.rows = rows;
     this.columns = columns;
     this.grid = this.prepareGrid();
@@ -41,7 +41,7 @@ export default class Grid {
 
   configureCells() {
     const allCells = this.eachCell();
-    for (let c of allCells) {
+    for (const c of allCells) {
       if (!c) continue;
       const { row, column: col } = c;
       c.north = this.getCellAt(row - 1, col);
@@ -104,7 +104,7 @@ export default class Grid {
         return false;
       }
       for (let j = 0; j < current.links.length; j++) {
-        let cell = current.links[j];
+        const cell = current.links[j];
         if (distances.at(cell) < distances.at(current)) {
           maybe = cell;
           break;
@@ -140,7 +140,7 @@ export default class Grid {
   deadEnds(): number {
     let count = 0;
     const cellGenerator = this.eachCell();
-    for (let cell of cellGenerator) {
+    for (const cell of cellGenerator) {
       if (cell?.links.length === 1) {
         count++;
       }
@@ -152,7 +152,7 @@ export default class Grid {
   toString() {
     let output = `+${"---+".repeat(this.columns)}\n`;
     const rowGen = this.eachRow();
-    for (let row of rowGen) {
+    for (const row of rowGen) {
       let top = "|";
       let bottom = "+";
 

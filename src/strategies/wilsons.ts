@@ -7,7 +7,7 @@ export function* wilsons(grid: Grid) {
   const gridGenerator = grid.eachCell();
 
   // Push all cells onto the unvisited queue
-  for (let c of gridGenerator) {
+  for (const c of gridGenerator) {
     if (c) unvisited.push(c);
   }
 
@@ -25,7 +25,9 @@ export function* wilsons(grid: Grid) {
       const nonNullNeighbors = Object.values(cell.neighbors).filter((v) => {
         return v !== null;
       });
-      cell = arraySample(nonNullNeighbors);
+      // The whole purpose above is to filter out the nulls.
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      cell = arraySample(nonNullNeighbors)!;
       const position = path.indexOf(cell);
       if (position >= 0) {
         path.splice(position + 1);

@@ -2,7 +2,7 @@ export const arrayOf = (val: number): number[] => {
   return [...Array(val).keys()];
 };
 
-export const arraySample = (array: any[]): any => {
+export const arraySample = <T>(array: T[]): T => {
   const index = randomFrom(array.length - 1);
   return array[index];
 };

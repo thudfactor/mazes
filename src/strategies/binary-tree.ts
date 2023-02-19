@@ -3,7 +3,7 @@ import { arraySample } from "../util/index";
 
 export function* binaryTree(grid: Grid) {
   const cellGenerator = grid.eachCell();
-  for (let c of cellGenerator) {
+  for (const c of cellGenerator) {
     if (!c) continue;
     if (!c.north && c.east) {
       c.link(c.east);

@@ -5,6 +5,7 @@ import { Meta } from "./components/meta";
 import { Navigator } from "./components/navigator";
 import { Settings } from "./components/settings";
 import WinState from "./hooray.gif";
+import type Cell from "./model/cell";
 import Grid from "./model/grid";
 import { selectRenderer, selectSize, selectStrategy } from "./store/options-slice";
 import { createMaze, MazeFunction } from "./strategies";
@@ -23,7 +24,7 @@ export function App() {
 
   // this nonsense is due to using state hooks in event handlers
   const avatarPosRef = useRef(avatarPos);
-  const setAvatarPos = (data: any) => {
+  const setAvatarPos = (data: Cell) => {
     avatarPosRef.current = data;
     _setAvatarPos(data);
   };

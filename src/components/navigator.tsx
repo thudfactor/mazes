@@ -9,7 +9,7 @@ const Wrapper = styled.div`
 `;
 
 type NavigatorProps = {
-  navigate: Function;
+  navigate: (direction: string) => void;
 };
 
 export const Navigator = ({ navigate }: NavigatorProps) => {
