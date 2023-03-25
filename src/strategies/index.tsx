@@ -4,6 +4,7 @@ export { binaryTree } from "./binary-tree";
 export { huntKill } from "./hunt-kill";
 export { sidewinder } from "./sidewinder";
 export { wilsons } from "./wilsons";
+export { recursiveBacktracker } from "./recursive-backtracker";
 
 export type MazeFunction = (grid: Grid) => Generator<Grid, void, unknown>;
 

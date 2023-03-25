@@ -57,6 +57,15 @@ export default class Cell {
     };
   }
 
+  /** Returns all of the neighbors that have not been visited (ie, have no links) */
+  unvisitedNeighbors(): Cell[] {
+    const neighbors = Object.values(this.neighbors);
+    const unvisited = neighbors.filter((n) => {
+      return n && n.links.length === 0;
+    }) as Cell[]; // we filtering out the null values, but TS can't figure it out
+    return unvisited || [];
+  }
+
   private _clearDistances() {
     this._distanceCache = null;
   }

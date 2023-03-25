@@ -2,6 +2,7 @@ import Cell from "../model/cell";
 import Grid from "../model/grid";
 import { arraySample } from "../util/index";
 
+/** River bias. Low memory needs but potenially visits cells many many times */
 export function* huntKill(grid: Grid) {
   let current: Cell | null = grid.random_cell();
 

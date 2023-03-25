@@ -81,6 +81,17 @@ export const Settings = () => {
         <p>Changing this will reset the maze.</p>
         <label>
           <input
+            onChange={() => dispatch(setStrategy(MazeStrategy.recursiveBacktracker))}
+            checked={builder === Mazes.recursiveBacktracker}
+            type="radio"
+            name="builder"
+            value="recursivebacktracker"
+          />{" "}
+          Recursive Backtracker
+        </label>
+        <br />
+        <label>
+          <input
             onChange={() => dispatch(setStrategy(MazeStrategy.huntKill))}
             checked={builder === Mazes.huntKill}
             type="radio"

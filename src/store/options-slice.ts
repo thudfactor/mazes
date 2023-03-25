@@ -14,12 +14,14 @@ export enum MazeStrategy {
   aldousBroder = "aldousBroder",
   binaryTree = "binaryTree",
   huntKill = "huntKill",
+  recursiveBacktracker = "recursiveBacktracker",
   sidewinder = "sidewinder",
   wilsons = "wilsons",
 }
 
 const mazeMatcher = {
   aldousBroder: Mazes.aldousBroder,
+  recursiveBacktracker: Mazes.recursiveBacktracker,
   binaryTree: Mazes.binaryTree,
   huntKill: Mazes.huntKill,
   sidewinder: Mazes.sidewinder,
@@ -35,7 +37,7 @@ const optionsSlice = createSlice({
   name: "options",
   initialState: {
     size: 20,
-    strategy: MazeStrategy.huntKill,
+    strategy: MazeStrategy.recursiveBacktracker,
     renderer: Renderer.SVG,
     showSolution: false,
     showDistance: false,
