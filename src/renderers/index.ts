@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 import type Cell from "../model/cell";
 import type Grid from "../model/grid";
 

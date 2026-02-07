@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { RendererProps } from ".";
@@ -56,7 +57,7 @@ function renderDistance(maze: Grid, showDistance: boolean, showSolution: boolean
         height={cellSize}
         fill={fill}
         fillOpacity={opacity}
-      />
+      />,
     );
   }
   return <g className="distances">{rectAr}</g>;

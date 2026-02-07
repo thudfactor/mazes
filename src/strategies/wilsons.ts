@@ -26,7 +26,7 @@ export function* wilsons(grid: Grid) {
         return v !== null;
       });
       // The whole purpose above is to filter out the nulls.
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
       cell = arraySample(nonNullNeighbors)!;
       const position = path.indexOf(cell);
       if (position >= 0) {

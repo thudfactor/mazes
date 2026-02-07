@@ -15,8 +15,8 @@ interface MazeOptions {
 export function createMaze(grid: Grid, { strategy }: MazeOptions): Grid {
   const stepper = strategy(grid);
   let i = 0;
-  // eslint-disable-next-line
-  for (let s of stepper) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  for (const _s of stepper) {
     i += 1;
   }
   console.info(`${strategy.name} in ${i} steps`);

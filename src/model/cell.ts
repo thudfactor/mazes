@@ -31,6 +31,7 @@ export default class Cell {
     if (!this.linked(cell)) {
       this.links.push(cell);
       this._clearDistances();
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       bidi && cell.link(this, false);
     }
   }
@@ -38,6 +39,7 @@ export default class Cell {
   unlink(cell: Cell, bidi = true) {
     const newLinks = this.links.filter((current) => !cell.equals(current));
     this.links = newLinks;
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     bidi && cell.unlink(this, false);
   }
 

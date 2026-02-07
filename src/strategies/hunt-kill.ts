@@ -32,7 +32,7 @@ export function* huntKill(grid: Grid) {
           current = c;
           const chosen = arraySample(visitedNeighbors);
           // We have filtered non-null values from the neighbors array above
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
           current.link(chosen!);
           break;
         }

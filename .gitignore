@@ -11,6 +11,14 @@
 # production
 /build
 
+# Vite
+dist
+dist-ssr
+*.local
+
+# Vitest
+coverage
+
 # misc
 .DS_Store
 .env.local

@@ -11,7 +11,7 @@ if (container) {
   root.render(
     <Provider store={store}>
       <App />
-    </Provider>
+    </Provider>,
   );
 } else {
   console.error("Could not find app root.");
