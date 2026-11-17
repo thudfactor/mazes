@@ -13,6 +13,7 @@ Interactive maze generation and solving application built with React, TypeScript
 - `npm run test-coverage` - Run tests with coverage report (no watch)
 - `npm run build` - Build for production
 - `npm run lint` - Run ESLint on src directory
+- `npm run deploy` - Build and deploy to Cloudflare Workers (see `wrangler.jsonc`)
 
 ### Testing Individual Files
 ```bash
